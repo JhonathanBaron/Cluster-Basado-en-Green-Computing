@@ -19,11 +19,22 @@ Claramente cada una de estas aplicaciones requiere un hardware específico para 
 debido a que el principio de un clúster es dividir un trabajo grande en pequeñas tareas que se distribuyen en
 varios nodos (computadores) para ser procesadas simultáneamente.
 
+# ¿Qué es el Big Data?
+Este término refiere al manejo de grandes conjuntos de datos. A medida que los datos se vuelven más masivos, se hacen más complejos para trabajar con herramientas convencionales, lo que crea la necesidad de tecnologías capaces de procesarlos y optimizar la velocidad. Además, la mayoría de los datos tienen múltiples formatos, lo cual es inherente a la necesidad de procesarlos en tiempo casi real; en este contexto los clústeres Beowulf pueden utilizarse como plataforma base para procesar Big Data utilizando frameworks como Hadoop o Spark, softwares especializados en usar los recursos distribuidos, disco duro o RAM, para procesar datos masivos.
 
-Este proyecto se fundamenta en la necesidad de superar las limitaciones de procesamiento de arquitecturas monolíticas en robótica de exploración espacial.
+# ¿Qué es procesamiento paralelo y distribuido?
+•	Procesamiento paralelo: múltiples tareas se ejecutan al mismo tiempo en varios núcleos de una misma máquina o en distintas máquinas.
+•	Procesamiento distribuido: tareas se dividen entre distintos nodos que se comunican a través de una red.
+El clúster Beowulf combina ambas estrategias, permitiendo aprovechar tanto los núcleos de cada nodo como el conjunto de nodos interconectados.
 
-* **Green Computing y Economía Circular:** Reutilización de hardware en desuso para reducir la huella de carbono tecnológica, maximizando el ciclo de vida de los componentes.
-* **Arquitectura Beowulf:** Un clúster multicomputador construido con hardware comercial estandarizado (COTS), conectado mediante una red local para procesamiento paralelo.
-* **Procesamiento de Datos LiDAR:** Manejo masivo de nubes de puntos (Big Data) provenientes de los sensores del Rover de Exploración Espacial Terrestre (SGI 3863).
-* **SLAM (Simultaneous Localization and Mapping):** Algoritmos críticos que requieren bajas latencias para cerrar lazos de control a frecuencias superiores a 10 Hz.
-* **ROS2 DDS:** Middleware de comunicación en tiempo real utilizado para la transmisión de datos entre el Rover y el clúster.
+# Nodo Maestro
+Este es la unidad de cómputo (también conocida como nodo manager) que coordina el funcionamiento del clúster. Sus funciones son:
+•	Distribuir tareas a los nodos trabajadores.
+•	Monitorear el estado y recursos de los nodos.
+•	Centralizar logs, datos y configuraciones.
+Si es necesario también puede realizar tareas de procesamiento.
+Nodos Trabajadores
+Estas son las unidades que se encargan de ejecutar las tareas según son coordinadas por el nodo Maestro, y a diferencia de este, tienen menos responsabilidades y se centran en la ejecución de las tareas computacionales asignadas, sin registrar el comportamiento de otros nodos.
+
+# Red Local
+En el contexto de un clúster la red local es un componente muy importante, pues es esencialmente el medio en el que varias computadoras simulan ser una sola; la interconexión de los nodos a partir de red cableada mejora las velocidades de trasmisión como la estabilidad del sistema. Lo más común es usar una red Ethernet por su bajo costo y relativa facilidad de instalación y configuración (además es la que se usara en este manual), en clústeres pequeños o medianos lo usual es usar una topología de red tipo estrella (configuración para una red de área local (LAN) en la que cada uno de los nodos están conectados a un punto de conexión central), en este caso se utiliza un switch (Gigabit) para realizar este fin; continuamente se adjunta la topología de red utilizada en nuestro clúster.
