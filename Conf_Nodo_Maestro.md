@@ -6,7 +6,24 @@ Para estandarizar y agilizar el despliegue tanto del maestro como de los nodos e
 
 ## Script de Configuración Base (`config_nodo.sh`)
 
-Puedes crear un archivo llamado `config_nodo.sh` en tu servidor, copiar el siguiente código, darle permisos de ejecución (`chmod +x config_nodo.sh`) y ejecutarlo con privilegios de superusuario.
+## 1. ¿Qué hace este script?
+Al ejecutarse, el script realiza las siguientes operaciones a nivel de sistema:
+1. **Detección de Hardware:** Identifica la interfaz de red física conectada al switch 3Com.
+2. **Asignación de Identidad:** Cambia el *hostname* del equipo.
+3. **Bloqueo de Cloud-Init:** Crea el archivo `/etc/cloud/cloud-init.disabled` para evitar la sobrescritura de la red en cada reinicio.
+4. **Configuración de Netplan:** Aplica una IP estática, puerta de enlace y DNS.
+5. **Seguridad y Acceso:** Genera claves SSH (Ed25519) sin contraseña para la orquestación remota.
+
+---
+
+## 2. Instrucciones de Ejecución Paso a Paso
+
+Para implementar esta configuración en el Nodo Maestro o en los Workers, siga estrictamente estos pasos en la terminal del servidor:
+
+### Paso 1: Crear el archivo ejecutable
+Abra el editor de texto integrado `nano` creando un archivo llamado `config_nodo.sh`:
+```bash
+nano config_nodo.sh
 
 ```bash
 #!/bin/bash
