@@ -21,7 +21,20 @@ Al ejecutarse, el script realiza las siguientes operaciones a nivel de sistema:
 Para implementar esta configuración en el Nodo Maestro o en los Workers, siga estrictamente estos pasos en la terminal del servidor:
 
 ### Paso 1: Crear el archivo ejecutable
-Abra el editor de texto integrado `nano` creando un archivo llamado `config_nodo.sh`:
+Abra el editor de texto integrado `nano` creando un archivo llamado `config_nodo.sh`
+
+### Paso 2: Asignar permisos de ejecución
+El sistema requiere permisos explícitos para tratar el archivo de texto como un programa. Ejecute:
+`chmod +x config_nodo.sh`
+
+### Paso 3: Ejecutar el script (Ejemplo para el Maestro)
+Ejecute el script con privilegios de administrador (sudo), pasando los tres argumentos requeridos en el siguiente orden: nombre del equipo, IP del gateway, y la IP estática del nodo.
+
+Para el Nodo Maestro, el comando exacto es:
+
+sudo ./config_nodo.sh nodo-maestro 10.4.8.1 10.4.8.75/24
+(Nota para la escalabilidad: Cuando deba configurar el primer nodo esclavo HP Probook, simplemente transfiera el archivo config_nodo.sh a ese equipo y cambie los argumentos en la ejecución, por ejemplo: sudo ./config_nodo.sh worker-01 10.4.8.1 10.4.8.20/24).
+
 ```bash
 nano config_nodo.sh
 
