@@ -172,7 +172,7 @@ ansible_user=worker  # Cambie 'worker' por el nombre de usuario real de sus equi
 ansible_ssh_private_key_file=~/.ssh/id_ed25519
 ```
 ### Paso 3: Prueba de Conectividad (El "Ping" del Clúster)
-Una vez distribuidas las claves, verifique que el Maestro tiene control total sobre el clúster enviando un comando de prueba (ping) a todos los nodos mediante Ansible:
+Una vez distribuidas las claves, verifique que el Maestro tiene control total sobre el clúster enviando un comando de prueba (ping) a todos los nodos mediante Ansible (Ejecute en la carpeta donde tenga el host.ini):
 
 ```Bash
 ansible all -i ~/cluster-config/hosts.ini -m ping
