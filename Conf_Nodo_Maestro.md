@@ -131,7 +131,7 @@ Dado que el clúster Beowulf del I2E cuenta con múltiples nodos trabajadores, l
 ### ¿Qué hace esta configuración?
 1. **Instala Ansible** en el Nodo Maestro.
 2. **Crea un Inventario (`hosts.ini`)**: Un archivo que le dice al Maestro cuáles son las direcciones IP de sus nodos trabajadores y cómo agruparlos.
-3. **Distribuye las Claves SSH**: Envía la clave pública del Maestro a los workers para que Ansible pueda entrar sin pedir contraseña; para esto revisa el Conf_Nodos_Workers.md ().
+3. **Distribuye las Claves SSH**: Envía la clave pública del Maestro a los workers para que Ansible pueda entrar sin pedir contraseña; para esto revisa el Conf_Nodos_Trabajadores.md (https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/35e28c9a3949be37878c054fb63bb2fca6689c79/Conf_Nodos_Trabajadores.md).
 
 ### Instrucciones de Ejecución Paso a Paso
 
@@ -148,7 +148,7 @@ Es una buena práctica de ingeniería mantener los archivos de configuración de
 Bash
 mkdir -p ~/`Nombre_Carpeta`
 nano ~/`Nombre_Carpeta`/hosts.ini
-Copie y pegue la siguiente estructura lógica dentro del archivo (ajuste las IPs según la cantidad de workers que tenga y sus direcciones ip, esto es despues de ejecutar los pasos en la guía de Conf_Nodos_Workers.md):
+Copie y pegue la siguiente estructura lógica dentro del archivo (ajuste las IPs según la cantidad de workers que tenga y sus direcciones ip, esto es despues de ejecutar los pasos en la guía de Conf_Nodos_Trabajadores.md):
 
 ```bash
 [maestro]
