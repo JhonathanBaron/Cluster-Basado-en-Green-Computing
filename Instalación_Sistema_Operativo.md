@@ -33,3 +33,7 @@ Para garantizar la escalabilidad y flexibilidad en la gestión del disco, se sel
 * **Partición `Swap` (Memoria Virtual):** Fundamental para evitar caídas del sistema bajo carga extrema. Para nuestros nodos con 8 GB de RAM, se exige un mínimo de **4 GB de espacio swap**.
 * **Partición `/` (Root):** Asignar un mínimo de **5 GB** para una instalación completa. Aquí se almacenan la mayoría de los archivos del sistema, librerías base y ejecutables.
 * **Partición `/home` (Datos de Usuario):** Asignar un mínimo de **100 MB**. Aislar esta partición permite mantener a salvo los datos del usuario de forma independiente del sistema.
+
+# **SI REQUIERE MAYOR INFORMACIÓN, A CONTINUACIÓN ENCONTRARA UN MANUAL DE MI AUTORÍA PARA AYUDARLE EN EL PROCESO**
+
+**[Ver el Manual de Instalación de Ubuntu Server (PDF)](https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/9bcf15b2dcebcc01cdbf5904be05dbe153f4dc9b/Documentos/Instalaci%C3%B3n_Ubuntu_Server.pdf)**
