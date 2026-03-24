@@ -7,6 +7,12 @@ Proyecto desarrollado en la **Universidad Pedagógica y Tecnológica de Colombia
 * **Nodo Maestro:** Torre con procesador Intel Core i5-4590S, 8 GB RAM DDR3, 512 GB SSD.
   
 * **Nodos Workers (7x):** Placas base reutilizadas de portátiles HP Probook. Procesadores Intel Core i7-3612QM (4 núcleos, 8 hilos, 3.10 GHz) y entre 8 y 16 GB de RAM, 500 GB HDD.
+  
+<div align="center">
+  <img src="https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/54ce87d90f529458a9faa6975ab67c0c20fa5f1e/Imagenes/placas.jpeg" width="50%" alt="Placas Portátiles">
+  <br>
+  <em>Placas Portátiles .</em>
+</div>
 
 * **Red:** Topología de estrella. Switch Gigabit Ethernet 3Com Baseline 2952-SFPPLUS (1000 Mbps) y cableado UTP Cat 5e.
 
