@@ -126,12 +126,12 @@ echo "Proceso finalizado con exito."
 ```
 ## 4. Orquestación y Automatización con Ansible
 
-Dado que el clúster Beowulf del I2E cuenta con múltiples nodos trabajadores (HP Probook), la administración manual de cada equipo es ineficiente. Para solucionar esto, el Nodo Maestro utiliza **Ansible**, una herramienta de orquestación *agentless* (sin agentes) que utiliza las claves SSH que generamos en el paso anterior para ejecutar comandos, instalar software (como Ray o ROS2) y configurar toda la red en paralelo.
+Dado que el clúster Beowulf del I2E cuenta con múltiples nodos trabajadores, la administración manual de cada equipo es ineficiente. Para solucionar esto, el Nodo Maestro, y también como una recomendación, usaremos **Ansible**, una herramienta de orquestación *agentless* (sin agentes) que utiliza las claves SSH que generamos en el paso anterior para ejecutar comandos o instalar software (como Ray, librerias de python).
 
 ### ¿Qué hace esta configuración?
 1. **Instala Ansible** en el Nodo Maestro.
 2. **Crea un Inventario (`hosts.ini`)**: Un archivo que le dice al Maestro cuáles son las direcciones IP de sus nodos trabajadores y cómo agruparlos.
-3. **Distribuye las Claves SSH**: Envía la clave pública del Maestro a los workers para que Ansible pueda entrar sin pedir contraseña.
+3. **Distribuye las Claves SSH**: Envía la clave pública del Maestro a los workers para que Ansible pueda entrar sin pedir contraseña; para esto revisa el Conf_Nodos_Workers.md ().
 
 ### Instrucciones de Ejecución Paso a Paso
 
@@ -140,3 +140,40 @@ Ejecute los siguientes comandos en la terminal del Nodo Maestro para actualizar 
 ```bash
 sudo apt update
 sudo apt install ansible -y
+```
+### Paso 2: Crear el Archivo de Inventario
+
+Es una buena práctica de ingeniería mantener los archivos de configuración del clúster organizados. Crearemos un directorio específico y un archivo de inventario.
+
+Bash
+mkdir -p ~/`Nombre_Carpeta`
+nano ~/`Nombre_Carpeta`/hosts.ini
+Copie y pegue la siguiente estructura lógica dentro del archivo (ajuste las IPs según la cantidad de workers que tenga y sus direcciones ip, esto es despues de ejecutar los pasos en la guía de Conf_Nodos_Workers.md):
+
+```bash
+[maestro]
+Ip_nodo_maestro ansible_connection=local
+#ejemplo:
+#10.4.8.75 ansible_connection=local
+
+[workers]
+Ips_Nodos_Workers
+#10.4.8.20
+#10.4.8.21
+#10.4.8.22
+#10.4.8.23
+
+[cluster:children]
+maestro
+workers
+
+[cluster:vars]
+ansible_user=worker  # Cambie 'worker' por el nombre de usuario real de sus equipos
+ansible_ssh_private_key_file=~/.ssh/id_ed25519
+```
+### Paso 3: Prueba de Conectividad (El "Ping" del Clúster)
+Una vez distribuidas las claves, verifique que el Maestro tiene control total sobre el clúster enviando un comando de prueba (ping) a todos los nodos mediante Ansible:
+
+```Bash
+ansible all -i ~/cluster-config/hosts.ini -m ping
+```
