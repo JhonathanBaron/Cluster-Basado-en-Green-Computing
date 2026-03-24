@@ -3,8 +3,11 @@ Para empezar, se debe tener claridad en varios aspectos para embarcarse en el re
 primeramente, se debe comprender que un clúster Beowulf es un conjunto de computadoras interconectadas entre sí 
 en una red local; esto para que trabajen en conjunto como si fueran una sola unidad de procesamiento, además se 
 caracterizan por estar construidas con hardware convencional y basadas en software libre.
-![Acondicionamiento de las Placas usadas en mi cluster](https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/1262ef96d0f9bf7807c948bb299ffe6009dce77a/Imagenes/cluster_v2.jpeg)
-
+<div align="center">
+  <img src="https://raw.githubusercontent.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/main/Imagenes/cluster_v2.jpeg" width="80%" alt="Proceso de acondicionamiento de placas HP Probook 4420s">
+  <br>
+  <em>Figura 1: Acondicionamiento de las Placas base reutilizadas. Se aprecia la limpieza y preparación antes del montaje en el rack modular.</em>
+</div>
 # Usos de un clúster Beowulf🐱‍💻
 Las aplicaciones de esta tecnología son muy variadas, puesto que permiten resolver problemas que requieren gran 
 capacidad como recursos de cómputo; por lo cual son útiles en: 
