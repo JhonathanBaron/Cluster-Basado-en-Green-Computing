@@ -24,6 +24,7 @@ Este término refiere al manejo de grandes conjuntos de datos. A medida que los 
 
 # ¿Qué es procesamiento paralelo y distribuido?
 •	Procesamiento paralelo: múltiples tareas se ejecutan al mismo tiempo en varios núcleos de una misma máquina o en distintas máquinas.
+
 •	Procesamiento distribuido: tareas se dividen entre distintos nodos que se comunican a través de una red.
 El clúster Beowulf combina ambas estrategias, permitiendo aprovechar tanto los núcleos de cada nodo como el conjunto de nodos interconectados.
 
