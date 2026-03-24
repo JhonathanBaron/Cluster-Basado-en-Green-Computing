@@ -3,7 +3,8 @@ Para empezar, se debe tener claridad en varios aspectos para embarcarse en el re
 primeramente, se debe comprender que un clúster Beowulf es un conjunto de computadoras interconectadas entre sí 
 en una red local; esto para que trabajen en conjunto como si fueran una sola unidad de procesamiento, además se 
 caracterizan por estar construidas con hardware convencional y basadas en software libre.
-![hola](https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/4973f38a5771ed0d60ce929e6813a7be19697931/Imagenes/apartado_redes.jpg)
+![Acondicionamiento de las Placas usadas en mi cluster](https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/1262ef96d0f9bf7807c948bb299ffe6009dce77a/Imagenes/cluster_v2.jpeg)
+
 # Usos de un clúster Beowulf🐱‍💻
 Las aplicaciones de esta tecnología son muy variadas, puesto que permiten resolver problemas que requieren gran 
 capacidad como recursos de cómputo; por lo cual son útiles en: 
