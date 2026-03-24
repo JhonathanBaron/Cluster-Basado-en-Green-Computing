@@ -122,3 +122,21 @@ if [ ! -f "$RUTA_SSH" ]; then
 fi
 
 echo "Proceso finalizado con exito."
+
+```
+## 4. Orquestación y Automatización con Ansible
+
+Dado que el clúster Beowulf del I2E cuenta con múltiples nodos trabajadores (HP Probook), la administración manual de cada equipo es ineficiente. Para solucionar esto, el Nodo Maestro utiliza **Ansible**, una herramienta de orquestación *agentless* (sin agentes) que utiliza las claves SSH que generamos en el paso anterior para ejecutar comandos, instalar software (como Ray o ROS2) y configurar toda la red en paralelo.
+
+### ¿Qué hace esta configuración?
+1. **Instala Ansible** en el Nodo Maestro.
+2. **Crea un Inventario (`hosts.ini`)**: Un archivo que le dice al Maestro cuáles son las direcciones IP de sus nodos trabajadores y cómo agruparlos.
+3. **Distribuye las Claves SSH**: Envía la clave pública del Maestro a los workers para que Ansible pueda entrar sin pedir contraseña.
+
+### Instrucciones de Ejecución Paso a Paso
+
+#### Paso 1: Instalar Ansible en el Maestro
+Ejecute los siguientes comandos en la terminal del Nodo Maestro para actualizar los repositorios e instalar la herramienta:
+```bash
+sudo apt update
+sudo apt install ansible -y
