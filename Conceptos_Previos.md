@@ -47,7 +47,7 @@ Estas son las unidades que se encargan de ejecutar las tareas según son coordin
 En el contexto de un clúster la red local es un componente muy importante, pues es esencialmente el medio en el que varias computadoras simulan ser una sola; la interconexión de los nodos a partir de red cableada mejora las velocidades de trasmisión como la estabilidad del sistema. Lo más común es usar una red Ethernet por su bajo costo y relativa facilidad de instalación y configuración (además es la que se usara en este manual), en clústeres pequeños o medianos lo usual es usar una topología de red tipo estrella (configuración para una red de área local (LAN) en la que cada uno de los nodos están conectados a un punto de conexión central), en este caso se utiliza un switch (Gigabit) para realizar este fin; continuamente se adjunta la topología de red utilizada en nuestro clúster.
 
 <div align="center">
-  <img src="[https://raw.githubusercontent.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/main/Imagenes/cluster_v2.jpeg](https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/e7314b8912b60bdb537c63e39ce3f9c83083ce8f/Imagenes/apartado_redes.jpg)" width="50%" alt="Acondicionamiento de las Placas">
+  <img src="https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/e7314b8912b60bdb537c63e39ce3f9c83083ce8f/Imagenes/apartado_redes.jpg" width="50%" alt="Topología">
   <br>
   <em> Topología Actual de mi Cluster .</em>
 </div>
