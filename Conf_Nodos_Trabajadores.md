@@ -18,6 +18,14 @@ Al ejecutarse en un nodo worker recién instalado, el script realiza automática
 
 Para integrar un nuevo nodo worker al clúster, siga estos pasos en la terminal de la placa HP Probook:
 
+### Paso 0: Obtener la llave pública del Nodo Maestro
+Antes de ejecutar el script en cada worker, corra este comando **en el Nodo Maestro** para visualizar la llave pública generada previamente:
+```bash
+cat ~/.ssh/id_ed25519.pub
+```
+
+Copie toda la salida (una sola línea que inicia con `ssh-ed25519 AAAAC3...`). Ese texto completo es el que deberá pasar como tercer argumento al script en el Paso 3.
+
 ### Paso 1: Crear el archivo ejecutable
 Abra el editor de texto integrado `nano` creando un archivo llamado `config_worker.sh`:
 ```bash
@@ -31,7 +39,7 @@ chmod +x config_worker.sh
 ```
 
 ### Paso 3: Ejecutar el script
-Ejecute el script con privilegios de administrador (`sudo`), pasando el rango de red, el último octeto (índice) de la IP deseada, y (entre comillas) la llave pública SSH que generó previamente en el Nodo Maestro.
+Ejecute el script con privilegios de administrador (`sudo`), pasando el rango de red, el último octeto (índice) de la IP deseada, y (entre comillas) la llave pública SSH copiada en el Paso 0.
 
 Por ejemplo, si su red es `10.4.8.X`, quiere asignar la IP terminada en `20`, y su llave pública es `ssh-ed25519 AAA... maestro@cluster-i2e`, el comando exacto será:
 ```bash
@@ -135,21 +143,21 @@ echo "✅ Firewall configurado y activado."
 
 # 7. INYECCIÓN DE LLAVE SSH DEL MAESTRO
 if [ -n "$LLAVE_SSH" ]; then
-    echo "Configurando acceso SSH sin contraseña para el maestro..."
-    
+    echo "⏳ Configurando acceso SSH sin contraseña para el maestro..."
+
     # Capturar al usuario real que invocó sudo (para no inyectar en root)
     USUARIO_NODO=${SUDO_USER:-$USER}
-    
+
     mkdir -p /home/$USUARIO_NODO/.ssh
     echo "$LLAVE_SSH" >> /home/$USUARIO_NODO/.ssh/authorized_keys
     chmod 700 /home/$USUARIO_NODO/.ssh
     chmod 600 /home/$USUARIO_NODO/.ssh/authorized_keys
     chown -R $USUARIO_NODO:$USUARIO_NODO /home/$USUARIO_NODO/.ssh
-    
+
     echo "✅ Llave SSH agregada con éxito para el usuario: $USUARIO_NODO"
 fi
 
-echo "Configuración de $HOSTNAME completada con éxito."
+echo "🚀 Configuración de $HOSTNAME completada con éxito."
 ```
 
-** Una vez ejecutado en todos los nodos puede editar el Host.ini del Conf_Nodo_Maestro.md para acceder a los beneficios de usar ansible **
+**Una vez ejecutado en todos los nodos puede editar el Host.ini del Conf_Nodo_Maestro.md para acceder a los beneficios de usar ansible**
