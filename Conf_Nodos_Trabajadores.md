@@ -1,8 +1,8 @@
 # Configuración de los Nodos Workers
 
-Los nodos workers, conformados por placas base reutilizadas de portátiles HP Probook 4420s (Intel Core i5-560M, 8 GB RAM), son el músculo de procesamiento del clúster Beowulf. Su función exclusiva es ejecutar las cargas de trabajo intensivas (Big Data y SLAM) enviadas por el Nodo Maestro.
+Los nodos workers, son el músculo de procesamiento del clúster Beowulf. Su función exclusiva es ejecutar las cargas de trabajo intensivas (Big Data, procesamiento paralelo, entrenamiento de distintas sesiones de ia, etc) enviadas por el Nodo Maestro.
 
-Para agilizar la integración de estos 7 nodos al clúster, se ha diseñado un script en Bash que configura la red estática, habilita el encendido remoto (Wake-on-LAN), ajusta el firewall de seguridad e inyecta la llave SSH del maestro para permitir la orquestación remota sin intervención manual.
+Para agilizar la integración de estos nodos al clúster, se ha diseñado un script en Bash que configura la red estática, habilita el encendido remoto (Wake-on-LAN), ajusta el firewall de seguridad e inyecta la llave SSH del maestro para permitir la orquestación remota sin intervención manual.
 
 ## 1. ¿Qué hace este script?
 Al ejecutarse en un nodo worker recién instalado, el script realiza automáticamente lo siguiente:
@@ -135,7 +135,7 @@ echo "✅ Firewall configurado y activado."
 
 # 7. INYECCIÓN DE LLAVE SSH DEL MAESTRO
 if [ -n "$LLAVE_SSH" ]; then
-    echo "⏳ Configurando acceso SSH sin contraseña para el maestro..."
+    echo "Configurando acceso SSH sin contraseña para el maestro..."
     
     # Capturar al usuario real que invocó sudo (para no inyectar en root)
     USUARIO_NODO=${SUDO_USER:-$USER}
@@ -149,5 +149,7 @@ if [ -n "$LLAVE_SSH" ]; then
     echo "✅ Llave SSH agregada con éxito para el usuario: $USUARIO_NODO"
 fi
 
-echo "🚀 Configuración de $HOSTNAME completada con éxito."
+echo "Configuración de $HOSTNAME completada con éxito."
 ```
+
+** Una vez ejecutado en todos los nodos puede editar el Host.ini del Conf_Nodo_Maestro.md para acceder a los beneficios de usar ansible **
