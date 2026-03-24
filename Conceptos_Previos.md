@@ -1,10 +1,10 @@
-#Conceptos Previos 🐱‍🐉
+# Conceptos Previos 🐱‍🐉
 Para empezar, se debe tener claridad en varios aspectos para embarcarse en el reto de implementar un clúster, 
 primeramente, se debe comprender que un clúster Beowulf es un conjunto de computadoras interconectadas entre sí 
 en una red local; esto para que trabajen en conjunto como si fueran una sola unidad de procesamiento, además se 
 caracterizan por estar construidas con hardware convencional y basadas en software libre.
 
-#Usos de un clúster Beowulf🐱‍💻
+# Usos de un clúster Beowulf🐱‍💻
 Las aplicaciones de esta tecnología son muy variadas, puesto que permiten resolver problemas que requieren gran 
 capacidad como recursos de cómputo; por lo cual son útiles en: 
 
