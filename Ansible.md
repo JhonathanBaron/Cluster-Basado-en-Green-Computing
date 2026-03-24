@@ -47,20 +47,20 @@ Asegúrese de ejecutar estos comandos desde el directorio ~/ansible-cluster.
 1. Prueba de Conectividad (Ping):
 Verifica que el Maestro tiene acceso por SSH y que Python responde en todos los nodos (tanto el manager como los workers).
 
-Bash
-``ansible all -i hosts -m ping``
+``Bash
+ansible all -i hosts -m ping``
 
 2. Listar los nodos de un grupo específico:
 Si desea ver qué IPs componen el grupo de trabajadores antes de enviar una instrucción:
 
-Bash
-``ansible workers -i hosts --list-hosts``
+``Bash
+ansible workers -i hosts --list-hosts``
 
 3. Ejecutar comandos nativos de Linux (grep, ps, ls):
 Utilizando el módulo shell, podemos consultar información en tiempo real de múltiples nodos. Por ejemplo, para ver el modelo de procesador de los workers:
 
-Bash
-``ansible workers -i hosts -m shell -a "grep -i 'model name' /proc/cpuinfo"``
+``Bash
+ansible workers -i hosts -m shell -a "grep -i 'model name' /proc/cpuinfo"``
 
 
 (También puede usar esto para verificar procesos en ejecución, ej: -a "ps aux | grep python").
@@ -69,6 +69,6 @@ Bash
    
 Para instalar una librería de Python (ej. numpy) en todos los nodos workers simultáneamente, utilizando privilegios de administrador (-b):
 
-Bash
-``ansible workers -i hosts -b -m shell -a "pip3 install numpy --break-system-packages"``
+``Bash
+ansible workers -i hosts -b -m shell -a "pip3 install numpy --break-system-packages"``
 
