@@ -8,7 +8,7 @@ caracterizan por estar construidas con hardware convencional y basadas en softwa
 Las aplicaciones de esta tecnología son muy variadas, puesto que permiten resolver problemas que requieren gran 
 capacidad como recursos de cómputo; por lo cual son útiles en: 
 
-•	Simulaciones científicas.
+•	Simulaciones científicas. 
 •	Renderizado de gráficos.
 •	Procesamiento de datos masivos.
 •	Inteligencia artificial y machine learning.
