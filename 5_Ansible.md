@@ -66,7 +66,7 @@ Utilizando el módulo shell, podemos consultar información en tiempo real de m�
    
 Para instalar una librería de Python (ej. numpy) en todos los nodos workers simultáneamente, utilizando privilegios de administrador (-b):
 
-``ansible workers -i hosts -b -m shell -a "pip3 install numpy --break-system-packages"``
+``ansible workers -i hosts -b -m shell -a 'pip3 install numpy --break-system-packages'``
 
 ---
 
