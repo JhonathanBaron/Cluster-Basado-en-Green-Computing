@@ -2,7 +2,7 @@
 
 Administrar distintos nodos (maestros y trabajadores) de forma individual a través de SSH resulta ineficiente y propenso a errores humanos. Para solucionar esto y garantizar que todo el clúster Beowulf mantenga la misma configuración de software, el Grupo de Investigación I2E utiliza **Ansible**.
 
-Ansible es una herramienta de orquestación y automatización de TI de código abierto. Su principal ventaja en nuestra arquitectura "Green Computing" es que es *agentless* (no requiere instalar un software cliente en los nodos HP Probook); funciona enviando instrucciones directamente a través de las conexiones SSH previamente configuradas.
+Ansible es una herramienta de orquestación y automatización de TI de código abierto. Su principal ventaja en nuestra arquitectura "Green Computing" es que es *agentless* (no requiere instalar un software cliente en los nodos trabajadores); funciona enviando instrucciones directamente a través de las conexiones SSH previamente configuradas.
 
 ## 1. Instalación de Ansible (Solo en el Nodo Maestro)
 
