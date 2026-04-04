@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Monitor Lite | Clúster I2E</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f0f2f5; font-family: Roboto, 'Segoe UI', sans-serif; color: #1e293b; padding: 12px; }
+        .header { margin-bottom: 16px; }
+        h1 { font-size: 1.3rem; display: inline-block; }
+        .btn { background: #e2e8f0; border: 1px solid #cbd5e1; padding: 6px 12px; border-radius: 30px; font-size: 0.8rem; cursor: pointer; text-decoration: none; color: #1e293b; display: inline-block; margin-left: 10px; }
+        .stats { background: white; border-radius: 16px; padding: 12px; margin-bottom: 16px; display: flex; flex-wrap: wrap; justify-content: space-between; }
+        .stat-item { text-align: center; flex: 1; }
+        .stat-value { font-size: 1.5rem; font-weight: bold; }
+        .stat-label { font-size: 0.65rem; color: #5a6e8a; }
+        .controls { background: white; border-radius: 16px; padding: 12px; margin-bottom: 16px; }
+        .control-group { margin-bottom: 12px; }
+        .control-group label { font-size: 0.8rem; font-weight: bold; display: block; margin-bottom: 4px; }
+        .btn-small { background: #eef2ff; border: 1px solid #cbd5e1; padding: 6px 12px; border-radius: 20px; font-size: 0.7rem; cursor: pointer; margin-right: 6px; }
+        .btn-small.active { background: #1e3a5f; color: white; }
+        input[type=range] { width: 100%; margin: 8px 0; }
+        .nodo-card { background: white; border-radius: 16px; margin-bottom: 12px; padding: 12px; border-left: 4px solid #38bdf8; }
+        .nodo-card.offline { border-left-color: #e53e3e; opacity: 0.7; }
+        .nodo-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: bold; }
+        .nodo-estado { font-size: 0.7rem; padding: 2px 8px; border-radius: 20px; background: #eef2ff; }
+        .nodo-estado.offline { background: #fee2e2; color: #c53030; }
+        .metricas { display: flex; justify-content: space-around; margin-top: 8px; }
+        .metrica { text-align: center; }
+        .metrica .valor { font-size: 1.2rem; font-weight: bold; }
+        .footer { text-align: center; margin-top: 20px; font-size: 0.65rem; color: #5a6e8a; }
+        button { background: none; border: none; }
+        .refresh-btn { background: #e2e8f0; border: 1px solid #cbd5e1; padding: 8px; width: 100%; border-radius: 40px; font-size: 0.9rem; margin-top: 8px; }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>📱 Monitor Lite</h1>
+    <a href="/" class="btn">← Versión completa</a>
+</div>
+
+<div class="stats">
+    <div class="stat-item"><div class="stat-value" id="promTemp">--</div><div class="stat-label">Temp prom °C</div></div>
+    <div class="stat-item"><div class="stat-value" id="promCpu">--</div><div class="stat-label">CPU prom %</div></div>
+    <div class="stat-item"><div class="stat-value" id="maxTemp">--</div><div class="stat-label">Pico °C</div></div>
+</div>
+
+<div id="controlsContainer" class="controls"></div>
+
+<div id="nodosContainer"></div>
+
+<button class="refresh-btn" onclick="cargarDatos()">🔄 Actualizar ahora</button>
+<div class="footer">Actualización automática cada 10s</div>
+
+<script>
+    (function() {
+        var estadoActual = { modo: 'auto', pines: {}, nodos: {}, estado_nodos: {} };
+        var intervalId = null;
+
+        function fetchEstado() {
+            return fetch('/api/estado').then(function(res) { return res.json(); });
+        }
+
+        function setModo(modo) {
+            fetch('/api/modo', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ modo: modo }) })
+            .then(function() { cargarDatos(); });
+        }
+
+        function setPin(pin, valor) {
+            fetch('/api/comando', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pin: pin, valor: parseInt(valor) }) })
+            .then(function() { cargarDatos(); });
+        }
+
+        function renderControles(estado) {
+            var container = document.getElementById('controlsContainer');
+            var html = '<div class="control-group"><label>Modo de control</label>';
+            html += '<button class="btn-small ' + (estado.modo === 'auto' ? 'active' : '') + '" onclick="setModo(\'auto\')">Automático</button>';
+            html += '<button class="btn-small ' + (estado.modo === 'manual' ? 'active' : '') + '" onclick="setModo(\'manual\')">Manual</button></div>';
+            for (var pin in estado.pines) {
+                var info = estado.pines[pin];
+                var disabled = (estado.modo === 'auto' && info.tipo === 'pwm') ? 'disabled' : '';
+                html += '<div class="control-group"><label>' + info.nombre + '</label>';
+                if (info.tipo === 'pwm') {
+                    html += '<input type="range" min="0" max="255" value="' + info.valor + '" ' + disabled + ' onchange="setPin(\'' + pin + '\', this.value)" oninput="this.nextElementSibling.innerText=this.value">';
+                    html += '<span style="font-size:0.7rem; margin-left:6px;">' + info.valor + '</span>';
+                } else {
+                    html += '<button class="btn-small ' + (info.valor == 1 ? 'active' : '') + '" onclick="setPin(\'' + pin + '\', 1)">ON</button>';
+                    html += '<button class="btn-small ' + (info.valor == 0 ? 'active' : '') + '" onclick="setPin(\'' + pin + '\', 0)">OFF</button>';
+                }
+                html += '</div>';
+            }
+            container.innerHTML = html;
+        }
+
+        function cargarDatos() {
+            fetchEstado().then(function(estado) {
+                estadoActual = estado;
+                document.getElementById('promTemp').innerText = estado.promedios.temp.toFixed(1);
+                document.getElementById('promCpu').innerText = estado.promedios.cpu.toFixed(1);
+                document.getElementById('maxTemp').innerText = estado.temp_max.toFixed(1);
+                renderControles(estado);
+
+                var container = document.getElementById('nodosContainer');
+                var html = '';
+                for (var nombre in estado.estado_nodos) {
+                    var online = estado.estado_nodos[nombre];
+                    var datos = estado.nodos[nombre] || { temp: 0, cpu: 0 };
+                    var tempColor = !online ? '#94a3b8' : (datos.temp > 80 ? '#e53e3e' : (datos.temp > 60 ? '#e67e22' : '#1e293b'));
+                    html += '<div class="nodo-card ' + (online ? '' : 'offline') + '">';
+                    html += '<div class="nodo-header"><span>' + nombre + '</span><span class="nodo-estado ' + (online ? '' : 'offline') + '">' + (online ? '● Online' : '○ Offline') + '</span></div>';
+                    html += '<div class="metricas">';
+                    html += '<div class="metrica"><div class="valor" style="color:' + tempColor + ';">' + datos.temp.toFixed(1) + '°C</div><div>Temp</div></div>';
+                    html += '<div class="metrica"><div class="valor">' + datos.cpu.toFixed(1) + '%</div><div>CPU</div></div>';
+                    html += '</div></div>';
+                }
+                if (html === '') html = '<div style="text-align:center; padding:20px;">No hay datos de nodos aún.</div>';
+                container.innerHTML = html;
+            }).catch(function(e) { console.error(e); });
+        }
+
+        // Iniciar actualización cada 10 segundos
+        if (intervalId) clearInterval(intervalId);
+        intervalId = setInterval(cargarDatos, 10000);
+        cargarDatos();
+
+        // Exponer funciones globalmente para los botones inline
+        window.setModo = setModo;
+        window.setPin = setPin;
+        window.cargarDatos = cargarDatos;
+    })();
+</script>
+</body>
+</html>
