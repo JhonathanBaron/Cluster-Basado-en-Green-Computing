@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Panel Lite — Clúster Matris2</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; font-size: 14px; color: #1c2028; background-color: #eef0f3; }
+        .cab { background-color: #1a3a5c; color: #fff; padding: 10px 14px; }
+        .cab h1 { font-size: 15px; font-weight: bold; }
+        .cab p   { font-size: 11px; color: #88aac4; font-family: monospace; margin-top: 2px; }
+        .cab-links { margin-top: 6px; overflow: hidden; }
+        .cab-a { display: inline-block; font-size: 11px; padding: 3px 9px; border-radius: 2px; border: 1px solid; text-decoration: none; float: left; margin-right: 6px; }
+        .cab-full   { color: #88c8f0; border-color: #4488aa; }
+        .cab-logout { color: #f0a8a0; border-color: #aa5050; }
+        .cab-user   { float: right; font-size: 11px; color: #88aac4; font-family: monospace; line-height: 24px; }
+        .clr { clear: both; }
+        .nav { background: #ffffff; border-bottom: 2px solid #d0d4da; overflow: hidden; }
+        .nav-btn { float: left; width: 33.33%; padding: 11px 4px; font-size: 12px; font-weight: bold; text-align: center; background: #ffffff; border: none; border-bottom: 2px solid transparent; color: #8494a4; cursor: pointer; }
+        .nav-btn.activo { color: #1a5fa0; border-bottom-color: #1a5fa0; background: #eaf2fb; }
+        .panel { display: none; }
+        .panel.activo { display: block; }
+        .sec { background: #fff; border: 1px solid #ccc; margin: 8px; border-radius: 3px; overflow: hidden; }
+        .sec-titulo { padding: 9px 13px; font-size: 11px; font-weight: bold; letter-spacing: 0.8px; text-transform: uppercase; color: #fff; cursor: pointer; }
+        .sec-body { padding: 10px 12px; }
+        .t-gris   { background-color: #3a4a5a; }
+        .t-azul   { background-color: #1a5f9a; }
+        .t-verde  { background-color: #1a6438; }
+        .t-naranja{ background-color: #6a4400; }
+        select, input[type="text"] { width: 100%; padding: 9px 8px; font-size: 14px; border: 1px solid #bbb; border-radius: 2px; background: #fff; color: #1c2028; margin-bottom: 7px; }
+        .btn { display: block; width: 100%; padding: 11px 10px; margin-bottom: 7px; font-size: 13px; font-weight: bold; text-align: center; border: 1px solid transparent; border-radius: 3px; cursor: pointer; }
+        .btn:last-child { margin-bottom: 0; }
+        .btn-n { background: #eef0f3; border-color: #c4c8d0; color: #3a4a5a; }
+        .btn-b { background: #e8f1fb; border-color: #a8c4e0; color: #1a5fa0; }
+        .btn-g { background: #e8f5ee; border-color: #a0ccb4; color: #1a6438; }
+        .btn-r { background: #faecea; border-color: #daaaaa; color: #983020; }
+        .btn-a { background: #fdf4e0; border-color: #d4b060; color: #6a4400; }
+        .fila { overflow: hidden; margin-bottom: 7px; }
+        .fila:last-child { margin-bottom: 0; }
+        .f2 .btn { float: left; width: 49%; } .f2 .btn+.btn { margin-left: 2%; }
+        .f3 .btn { float: left; width: 32%; font-size: 12px; padding: 10px 4px; } .f3 .btn+.btn { margin-left: 2%; }
+        .f4 .btn { float: left; width: 23.5%; font-size: 11px; padding: 10px 2px; } .f4 .btn+.btn { margin-left: 2%; }
+        .sublabel { display: block; font-size: 10px; font-weight: bold; color: #6a7a8a; text-transform: uppercase; margin-bottom: 5px; margin-top: 8px; }
+        .note { font-size: 11px; color: #6a7a8a; background: #f4f5f7; border: 1px solid #d8dce2; border-radius: 2px; padding: 6px 9px; margin-bottom: 7px; }
+        .estado-grid { padding: 8px; }
+        .nodo-fila { overflow: hidden; margin-bottom: 6px; }
+        .nodo-card { float: left; width: 48%; background: #fff; border: 1px solid #ccc; border-radius: 3px; padding: 8px 10px; margin-right: 2%; margin-bottom: 6px; }
+        .nodo-card:nth-child(2n) { margin-right: 0; }
+        .nodo-card.online  { border-left: 3px solid #1a6438; }
+        .nodo-card.offline { border-left: 3px solid #983020; }
+        .nodo-card.check   { border-left: 3px solid #6a4400; }
+        .nodo-nombre { font-size: 12px; font-weight: bold; color: #3a4a5a; }
+        .nodo-ip     { font-size: 10px; font-family: monospace; color: #8a9aa8; }
+        .nodo-est    { font-size: 11px; font-weight: bold; margin-top: 4px; }
+        .est-online  { color: #1a6438; }
+        .est-offline { color: #983020; }
+        .estado-pie  { padding: 6px 8px; font-size: 11px; font-family: monospace; color: #8494a4; }
+        .pb-item { background: #fff; border: 1px solid #ccc; border-radius: 3px; margin: 8px 8px 0; padding: 10px 12px; }
+        .pb-item.sel { border-left: 3px solid #1a5fa0; background: #eaf2fb; }
+        .pb-nombre { font-size: 13px; font-weight: bold; font-family: monospace; }
+        .pb-hosts  { font-size: 11px; color: #1a5fa0; margin-top: 2px; }
+        .pb-desc   { font-size: 11px; color: #6a7a8a; margin-top: 2px; }
+        .pb-fecha  { font-size: 10px; color: #8494a4; margin-top: 2px; }
+        .pb-acciones { padding: 8px; overflow: hidden; }
+        .pb-acciones .btn { float: left; width: 49%; margin-bottom: 0; font-size: 12px; }
+        .pb-acciones .btn+.btn { margin-left: 2%; }
+        textarea.yaml-edit { width: 100%; min-height: 200px; background: #18202c; color: #a0c4b8; font-family: monospace; font-size: 12px; line-height: 1.7; padding: 10px 12px; border: none; resize: vertical; }
+        .pb-out { padding: 8px 12px; font-size: 11px; font-family: monospace; background: #10161e; color: #5a8878; display: none; margin-top: 7px; }
+        .pb-out.err { color: #c07070; }
+        .cons-bar { background: #0e1620; padding: 7px 12px; overflow: hidden; }
+        .cons-label { font-family: monospace; font-size: 11px; color: #3a5060; float: left; line-height: 22px; }
+        .btn-limp { float: right; background: transparent; border: 1px solid #223040; color: #3a5060; border-radius: 2px; padding: 3px 9px; font-size: 11px; cursor: pointer; }
+        textarea#consola { width: 100%; height: 240px; background: #18202c; color: #70988c; font-family: monospace; font-size: 12px; line-height: 1.75; padding: 10px 12px; border: none; resize: none; }
+    </style>
+</head>
+<body>
+
+<div class="cab">
+    <h1>Panel de Control — Clúster Matris2 (Lite)</h1>
+    <p>control@10.4.8.10 · puerto 7000 </p>
+    <div class="cab-links">
+        <a class="cab-a cab-full"   href="/">Versión completa</a>
+        <a class="cab-a cab-logout" href="/logout">Cerrar sesión</a>
+        <span class="cab-user">{{ usuario }}</span>
+        <div class="clr"></div>
+    </div>
+</div>
+
+<div class="nav">
+    <button class="nav-btn activo" onclick="tab('control', this)">Control</button>
+    <button class="nav-btn"        onclick="tab('estado',  this); cargarEstado();">Estado</button>
+    <button class="nav-btn"        onclick="tab('playbooks', this); cargarPlaybooks();">Playbooks</button>
+    <div class="clr"></div>
+</div>
+
+<div id="panel-control" class="panel activo">
+    <!-- Nodo objetivo -->
+    <div class="sec">
+        <div class="sec-titulo t-gris" onclick="plegar(this)">Nodo objetivo</div>
+        <div class="sec-body">
+            <select id="objetivo">
+                <option value="all">Todo el clúster</option>
+                <option value="manager">Manager — 10.4.8.10</option>
+                <option value="workers">Todos los workers</option>
+                <option value="10.4.8.11">Worker 1 — 10.4.8.11</option>
+                <option value="10.4.8.12">Worker 2 — 10.4.8.12</option>
+                <option value="10.4.8.13">Worker 3 — 10.4.8.13</option>
+                <option value="10.4.8.14">Worker 4 — 10.4.8.14</option>
+                <option value="10.4.8.15">Worker 5 — 10.4.8.15</option>
+                <option value="10.4.8.16">Worker 6 — 10.4.8.16</option>
+                <option value="10.4.8.17">Worker 7 — 10.4.8.17</option>
+                <option value="10.4.8.18">Worker 8 — 10.4.8.18</option>
+                <option value="10.4.8.21">Canelita — 10.4.8.21</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Diagnóstico -->
+    <div class="sec">
+        <div class="sec-titulo t-azul" onclick="plegar(this)">Diagnóstico</div>
+        <div class="sec-body">
+            <div class="fila f4">
+                <button class="btn btn-b" onclick="c('ping')">Ping</button>
+                <button class="btn btn-n" onclick="c('recursos')">RAM</button>
+                <button class="btn btn-n" onclick="c('uso_cpu')">CPU</button>
+                <button class="btn btn-n" onclick="c('espacio_disco')">Disco</button>
+            </div>
+            <div class="fila f3">
+                <button class="btn btn-n" onclick="c('uptime')">Uptime</button>
+                <button class="btn btn-n" onclick="c('procesos')">Procesos</button>
+                <button class="btn btn-n" onclick="c('temperatura')">Temp.</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sesiones -->
+    <div class="sec">
+        <div class="sec-titulo t-azul" onclick="plegar(this)">Sesiones de usuario</div>
+        <div class="sec-body">
+            <button class="btn btn-b" onclick="c('usuarios')">Ver sesiones activas</button>
+            <div class="note">Ejemplo: cluster1 pts/1</div>
+            <input type="text" id="txt_sesion" placeholder="usuario terminal">
+            <button class="btn btn-r" onclick="c('terminar_sesion','txt_sesion')">Cerrar sesión</button>
+        </div>
+    </div>
+
+    <!-- Energía -->
+    <div class="sec">
+        <div class="sec-titulo t-naranja" onclick="plegar(this)">Energía</div>
+        <div class="sec-body">
+            <button class="btn btn-a" onclick="c('wakeonlan')">Wake-on-LAN</button>
+            <div class="fila f2">
+                <button class="btn btn-n" onclick="if(confirm('Reiniciar?')) c('reboot')">Reiniciar</button>
+                <button class="btn btn-r" onclick="if(confirm('Apagar?')) c('poweroff')">Apagar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ray -->
+    <div class="sec">
+        <div class="sec-titulo t-verde" onclick="plegar(this)">Ray Cluster</div>
+        <div class="sec-body">
+            <div class="fila f3">
+                <button class="btn btn-g" onclick="c('iniciar_ray')">Iniciar</button>
+                <button class="btn btn-r" onclick="c('detener_ray')">Detener</button>
+                <button class="btn btn-n" onclick="c('estado_ray')">Estado</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jupyter -->
+    <div class="sec">
+        <div class="sec-titulo t-verde" onclick="plegar(this)">Jupyter Notebook</div>
+        <div class="sec-body">
+            <div class="fila f3">
+                <button class="btn btn-g" onclick="c('iniciar_jupyter')">Iniciar</button>
+                <button class="btn btn-r" onclick="c('detener_jupyter')">Detener</button>
+                <button class="btn btn-n" onclick="c('log_jupyter')">Ver log</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sistema -->
+    <div class="sec">
+        <div class="sec-titulo t-azul" onclick="plegar(this)">Sistema</div>
+        <div class="sec-body">
+            <button class="btn btn-b" onclick="if(confirm('Actualizar paquetes?')) c('actualizar_apt')">Actualizar apt</button>
+        </div>
+    </div>
+
+    <!-- Comando libre (Ansible) -->
+    <div class="sec">
+        <div class="sec-titulo t-gris" onclick="plegar(this)">Comando libre (Ansible)</div>
+        <div class="sec-body">
+            <input type="text" id="txt_cmd" placeholder="ej: ls -la /home">
+            <button class="btn btn-b" onclick="c('comando_libre','txt_cmd')">Ejecutar en nodos</button>
+        </div>
+    </div>
+
+    <!-- 🚪 Compuerta de comandos (local + ad-hoc) -->
+    <div class="sec">
+        <div class="sec-titulo t-gris" onclick="plegar(this)">Compuerta de comandos</div>
+        <div class="sec-body">
+            <select id="tipo_cmd" style="margin-bottom:8px;">
+                <option value="local">Shell local (en el control)</option>
+                <option value="ansible">Ansible ad‑hoc</option>
+            </select>
+            <div id="lite-cmd-local">
+                <input type="text" id="txt_local_cmd" placeholder="ej: mkdir /tmp/test">
+                <button class="btn btn-b" onclick="cmdLocalLite()">Ejecutar local</button>
+            </div>
+            <div id="lite-cmd-ansible" style="display:none;">
+                <input type="text" id="txt_ansible_mod" placeholder="Módulo (shell, command, ...)">
+                <input type="text" id="txt_ansible_args" placeholder="Argumentos">
+                <button class="btn btn-b" onclick="cmdAnsibleLite()">Ejecutar en nodos</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paquetes -->
+    <div class="sec">
+        <div class="sec-titulo t-gris" onclick="plegar(this)">Paquetes</div>
+        <div class="sec-body">
+            <span class="sublabel">Python / pip</span>
+            <input type="text" id="txt_pip" placeholder="ej: numpy">
+            <div class="fila f3">
+                <button class="btn btn-g" onclick="c('instalar_pip','txt_pip')">Instalar</button>
+                <button class="btn btn-r" onclick="c('desinstalar_pip','txt_pip')">Quitar</button>
+                <button class="btn btn-n" onclick="c('version_pip','txt_pip')">Version</button>
+            </div>
+            <button class="btn btn-n" onclick="c('listar_pip')">Listar pip</button>
+            <span class="sublabel">Sistema / apt</span>
+            <input type="text" id="txt_apt" placeholder="ej: htop">
+            <div class="fila f3">
+                <button class="btn btn-g" onclick="c('instalar_apt','txt_apt')">Instalar</button>
+                <button class="btn btn-r" onclick="c('desinstalar_apt','txt_apt')">Quitar</button>
+                <button class="btn btn-n" onclick="c('version_apt','txt_apt')">Version</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Consola unificada -->
+    <div class="sec">
+        <div class="cons-bar">
+            <span class="cons-label">root@control ~ $</span>
+            <button class="btn-limp" onclick="limpiarConsolaLite()">Limpiar</button>
+            <div class="clr"></div>
+        </div>
+        <textarea id="consola" readonly>Sistema listo. (versión Lite)</textarea>
+    </div>
+</div>
+
+<div id="panel-estado" class="panel">
+    <div class="estado-grid" id="estado-grid"></div>
+    <div class="estado-pie" id="estado-pie">Pulse "Estado" para actualizar.</div>
+    <div style="padding:0 8px 8px"><button class="btn btn-b" onclick="cargarEstado()">Actualizar estado</button></div>
+</div>
+
+<div id="panel-playbooks" class="panel">
+    <div id="pb-lista-wrap"><div style="padding:12px 8px;">Cargando...</div></div>
+    <div class="sec" style="margin-top:8px">
+        <div class="sec-titulo t-gris" onclick="plegar(this)">Editor de playbook</div>
+        <div class="sec-body">
+            <span class="sublabel">Nombre</span>
+            <input type="text" id="pb-nombre" placeholder="mi-playbook.yml">
+            <span class="sublabel">Contenido YAML</span>
+            <textarea class="yaml-edit" id="pb-yaml" spellcheck="false"></textarea>
+            <div class="pb-out" id="pb-out"></div>
+            <div class="fila f2" style="margin-top:7px">
+                <button class="btn btn-g" onclick="guardarPb()">Guardar</button>
+                <button class="btn btn-b" onclick="ejecutarPb()">Ejecutar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var NODOS = [
+        {ip:'10.4.8.10',nombre:'Manager'},{ip:'10.4.8.11',nombre:'Worker 1'},{ip:'10.4.8.12',nombre:'Worker 2'},
+        {ip:'10.4.8.13',nombre:'Worker 3'},{ip:'10.4.8.14',nombre:'Worker 4'},{ip:'10.4.8.15',nombre:'Worker 5'},
+        {ip:'10.4.8.16',nombre:'Worker 6'},{ip:'10.4.8.17',nombre:'Worker 7'},{ip:'10.4.8.18',nombre:'Worker 8'},
+        {ip:'10.4.8.21',nombre:'Canelita'}
+    ];
+
+    function tab(id, btn) {
+        var btns = document.getElementsByClassName('nav-btn');
+        var panels = document.getElementsByClassName('panel');
+        for (var i=0; i<btns.length; i++) btns[i].className = 'nav-btn';
+        for (var i=0; i<panels.length; i++) panels[i].className = 'panel';
+        btn.className = 'nav-btn activo';
+        document.getElementById('panel-' + id).className = 'panel activo';
+    }
+
+    function plegar(titulo) {
+        var body = titulo.nextSibling;
+        while (body && body.nodeType !== 1) body = body.nextSibling;
+        if (body) body.style.display = (body.style.display === 'none') ? '' : 'none';
+    }
+
+    function ts() {
+        var d = new Date();
+        return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0')+':'+d.getSeconds().toString().padStart(2,'0');
+    }
+
+    function c(accion, inputId) {
+        var consola = document.getElementById('consola');
+        var objetivo = document.getElementById('objetivo').value;
+        var extra = inputId ? document.getElementById(inputId).value : '';
+        consola.value += '\n[' + ts() + ']  ' + accion + '  ->  ' + objetivo + (extra ? '  ·  ' + extra : '') + '\nejecutando...';
+        consola.scrollTop = consola.scrollHeight;
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/api/ejecutar', true);
+        xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState !== 4) return;
+            var salida = (xhr.status === 200) ? (JSON.parse(xhr.responseText).output || '(sin salida)') : 'Error HTTP';
+            consola.value = consola.value.replace(/\nejecutando\.\.\.$/, '\n' + salida);
+            consola.scrollTop = consola.scrollHeight;
+        };
+        xhr.send(JSON.stringify({accion: accion, objetivo: objetivo, extra: extra}));
+    }
+
+    function limpiarConsolaLite() { document.getElementById('consola').value = 'Consola limpiada.'; }
+
+    // Compuerta lite
+    document.getElementById('tipo_cmd').addEventListener('change', function() {
+        var localDiv = document.getElementById('lite-cmd-local');
+        var ansDiv = document.getElementById('lite-cmd-ansible');
+        if (this.value === 'local') {
+            localDiv.style.display = 'block';
+            ansDiv.style.display = 'none';
+        } else {
+            localDiv.style.display = 'none';
+            ansDiv.style.display = 'block';
+        }
+    });
+    function cmdLocalLite() {
+        var cmd = document.getElementById('txt_local_cmd').value;
+        if (!cmd) return;
+        c('local_shell', 'txt_local_cmd');
+    }
+    function cmdAnsibleLite() {
+        var mod = document.getElementById('txt_ansible_mod').value;
+        var args = document.getElementById('txt_ansible_args').value;
+        if (!mod || !args) { alert("Complete módulo y argumentos"); return; }
+        var extra = mod + "|" + args;
+        var objetivo = document.getElementById('objetivo').value;
+        var consola = document.getElementById('consola');
+        consola.value += '\n[' + ts() + '] ansible ad-hoc → ' + objetivo + ' · ' + mod + ' · ' + args + '\nejecutando...';
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/api/ejecutar', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState !== 4) return;
+            var salida = (xhr.status === 200) ? (JSON.parse(xhr.responseText).output || '(sin salida)') : 'Error HTTP';
+            consola.value = consola.value.replace(/\nejecutando\.\.\.$/, '\n' + salida);
+            consola.scrollTop = consola.scrollHeight;
+        };
+        xhr.send(JSON.stringify({accion: 'ansible_adhoc', objetivo: objetivo, extra: extra}));
+    }
+
+    // Estado nodos
+    function cargarEstado() {
+        var grid = document.getElementById('estado-grid');
+        grid.innerHTML = '';
+        var fila = null;
+        for (var i=0; i<NODOS.length; i++) {
+            if (i % 2 === 0) { fila = document.createElement('div'); fila.className = 'nodo-fila'; grid.appendChild(fila); }
+            var card = document.createElement('div');
+            card.className = 'nodo-card check';
+            card.id = 'nc-' + NODOS[i].ip.replace(/\./g,'-');
+            card.innerHTML = '<div class="nodo-nombre">'+NODOS[i].nombre+'</div><div class="nodo-ip">'+NODOS[i].ip+'</div><div class="nodo-est est-check">verificando...</div>';
+            fila.appendChild(card);
+        }
+        document.getElementById('estado-pie').textContent = 'Actualizando...';
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/api/estado_nodos', true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState !== 4) return;
+            if (xhr.status !== 200) { document.getElementById('estado-pie').textContent = 'Error'; return; }
+            var data = JSON.parse(xhr.responseText);
+            for (var ip in data.nodos) {
+                var info = data.nodos[ip];
+                var card = document.getElementById('nc-' + ip.replace(/\./g,'-'));
+                if (card) {
+                    card.className = 'nodo-card ' + (info.online ? 'online' : 'offline');
+                    card.innerHTML = '<div class="nodo-nombre">'+info.nombre.charAt(0).toUpperCase()+info.nombre.slice(1)+'</div><div class="nodo-ip">'+ip+'</div><div class="nodo-est '+(info.online?'est-online':'est-offline')+'">'+(info.online?'En línea':'Sin respuesta')+'</div>';
+                }
+            }
+            var d = new Date();
+            document.getElementById('estado-pie').textContent = 'Actualizado: '+d.toLocaleTimeString();
+        };
+        xhr.send();
+    }
+
+    // Playbooks
+    var pbSel = null;
+    function cargarPlaybooks() {
+        var wrap = document.getElementById('pb-lista-wrap');
+        wrap.innerHTML = '<div style="padding:12px 8px;">Cargando...</div>';
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/api/playbooks', true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState !== 4 || xhr.status !== 200) return;
+            var data = JSON.parse(xhr.responseText);
+            wrap.innerHTML = '';
+            if (!data.playbooks || data.playbooks.length === 0) {
+                wrap.innerHTML = '<div style="padding:12px 8px;">Sin playbooks.</div>';
+                return;
+            }
+            for (var i=0; i<data.playbooks.length; i++) {
+                (function(pb) {
+                    var div = document.createElement('div');
+                    div.className = 'pb-item' + (pb.nombre === pbSel ? ' sel' : '');
+                    div.innerHTML = '<div class="pb-nombre">'+pb.nombre+'</div><div class="pb-hosts">hosts: '+pb.hosts+'</div><div class="pb-desc">'+pb.descripcion+'</div><div class="pb-fecha">📅 '+pb.fecha+'</div>';
+                    div.onclick = function() { selPb(pb.nombre, div); };
+                    wrap.appendChild(div);
+                })(data.playbooks[i]);
+            }
+            var accDiv = document.createElement('div');
+            accDiv.className = 'pb-acciones';
+            accDiv.innerHTML = '<button class="btn btn-n" onclick="nuevoEditorPb()">+ Nuevo</button><button class="btn btn-n" onclick="cargarPlaybooks()">Recargar</button><button class="btn btn-r" onclick="borrarPbSeleccionado()">🗑️ Borrar</button>';
+            wrap.appendChild(accDiv);
+            wrap.appendChild(document.createElement('div')).className = 'clr';
+        };
+        xhr.send();
+    }
+    function selPb(nombre, el) {
+        var items = document.getElementsByClassName('pb-item');
+        for (var i=0; i<items.length; i++) items[i].className = 'pb-item';
+        el.className = 'pb-item sel';
+        pbSel = nombre;
+        document.getElementById('pb-nombre').value = nombre;
+        document.getElementById('pb-out').style.display = 'none';
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/api/playbooks/leer', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState !== 4 || xhr.status !== 200) return;
+            var data = JSON.parse(xhr.responseText);
+            document.getElementById('pb-yaml').value = data.status === 'success' ? data.contenido : '# Error';
+        };
+        xhr.send(JSON.stringify({nombre: nombre}));
+    }
+    function nuevoEditorPb() {
+        pbSel = null;
+        document.getElementById('pb-nombre').value = '';
+        document.getElementById('pb-yaml').value = '# Desc: Descripción\n---\n- name: Play\n  hosts: workers\n  tasks:\n    - command: echo "hola"';
+        document.getElementById('pb-out').style.display = 'none';
+        var items = document.getElementsByClassName('pb-item');
+        for (var i=0; i<items.length; i++) items[i].className = 'pb-item';
+    }
+    function guardarPb() {
+        var nombre = document.getElementById('pb-nombre').value;
+        var contenido = document.getElementById('pb-yaml').value;
+        if (!nombre) { mostrarPbOut('Ingrese nombre.', true); return; }
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/api/playbooks/guardar', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState !== 4 || xhr.status !== 200) return;
+            var data = JSON.parse(xhr.responseText);
+            mostrarPbOut(data.output, data.status !== 'success');
+            if (data.status === 'success') cargarPlaybooks();
+        };
+        xhr.send(JSON.stringify({nombre: nombre, contenido: contenido}));
+    }
+    function ejecutarPb() {
+        var nombre = document.getElementById('pb-nombre').value;
+        if (!nombre) { mostrarPbOut('Guarde o seleccione un playbook.', true); return; }
+        mostrarPbOut('Ejecutando...', false);
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/api/playbooks/ejecutar', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState !== 4 || xhr.status !== 200) return;
+            var data = JSON.parse(xhr.responseText);
+            mostrarPbOut(data.output, data.status !== 'success');
+            var consola = document.getElementById('consola');
+            consola.value += '\n[' + ts() + '] ansible-playbook ' + nombre + '\n' + data.output;
+            consola.scrollTop = consola.scrollHeight;
+        };
+        xhr.send(JSON.stringify({nombre: nombre}));
+    }
+    function borrarPbSeleccionado() {
+        var nombre = document.getElementById('pb-nombre').value;
+        if (!nombre) { alert('No hay playbook seleccionado.'); return; }
+        if (!confirm('¿Eliminar '+nombre+'?')) return;
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/api/playbooks/borrar', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState !== 4 || xhr.status !== 200) return;
+            var data = JSON.parse(xhr.responseText);
+            mostrarPbOut(data.output, data.status !== 'success');
+            if (data.status === 'success') {
+                pbSel = null;
+                document.getElementById('pb-nombre').value = '';
+                document.getElementById('pb-yaml').value = '';
+                cargarPlaybooks();
+            }
+        };
+        xhr.send(JSON.stringify({nombre: nombre}));
+    }
+    function mostrarPbOut(texto, esErr) {
+        var el = document.getElementById('pb-out');
+        el.textContent = texto;
+        el.className = 'pb-out' + (esErr ? ' err' : '');
+        el.style.display = 'block';
+    }
+</script>
+</body>
+</html>
