@@ -65,7 +65,7 @@ ram_antes_spark = get_system_ram_mb()
 # Prueba de tiempo de inicialización
 t_inicio_spark = time.time()
 spark = SparkSession.builder \
-    .appName("TelemetriaRoverSpark") \
+    .appName("TelemetriaRoverSpark") \       #Esto depende de su clúster
     .master("spark://10.4.8.10:7077") \
     .getOrCreate()
 sc = spark.sparkContext
@@ -89,11 +89,8 @@ resultados['spark_volume_time'] = time.time() - t0
 
 spark.stop()
 
-# ---------------------------------------------------------
-# 3. IMPRESIÓN DE RESULTADOS (COPIA ESTO Y PÁSAMELO)
-# ---------------------------------------------------------
 print("\n" + "="*50)
-print(" RESULTADOS FINALES PARA ANÁLISIS (COPIAR ESTO):")
+print(" RESULTADOS FINALES PARA ANÁLISIS:")
 print("="*50)
 print(f"RAY:")
 print(f" - Tiempo Inicialización : {resultados['ray_startup_time']:.4f} segundos")
