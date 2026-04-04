@@ -23,8 +23,8 @@ NODOS_CONOCIDOS = [
     "10.4.8.21"
 ]
 
-WA_PHONE = "573227832432"
-WA_APIKEY = "3035001"
+WA_PHONE = "#Número_de_celular" #Cambiar estos dos según su número y token
+WA_APIKEY = "#Api"
 TEMP_ALARMA = 60.0
 COOLDOWN_ALARMA = 1800
 MAX_FALLOS_RED = 3
