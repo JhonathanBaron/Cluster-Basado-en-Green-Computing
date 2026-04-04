@@ -70,9 +70,6 @@ tiempo_spark = time.time() - t0
 spark.stop()
 print(f"    -> Finalizado en {tiempo_spark:.2f} segundos")
 
-# ---------------------------------------------------------
-# RESULTADOS PARA LA TESIS
-# ---------------------------------------------------------
 speedup_ray = tiempo_secuencial / tiempo_ray
 speedup_spark = tiempo_secuencial / tiempo_spark
 
