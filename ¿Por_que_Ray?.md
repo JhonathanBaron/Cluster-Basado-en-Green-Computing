@@ -1,5 +1,4 @@
-
-Para garantizar el manejo, procesamiento y análisis eficiente de los flujos masivos de datos provenientes de los vehículos teleoperados, la primera fase del diseño consistió en una revisión bibliográfica de las plataformas de computación distribuida existentes. Los criterios de selección establecidos incluyeron:
+Los criterios de selección establecidos incluyeron:
 
 - compatibilidad con sistemas operativos basados en Linux,
 - una curva de aprendizaje que permitiera el desarrollo ágil,
@@ -19,9 +18,7 @@ En la **Tabla** se presenta la matriz comparativa de los principales frameworks 
 | Ray | Python / C++ / Java | Modelo de computación distribuida flexible que rompe con el esquema tradicional de "paso de mensajes" o "MapReduce" | Baja - Media | Sobresaliente para Inteligencia Artificial, visión por computador y Reinforcement Learning. | [https://docs.ray.io/](https://docs.ray.io/) |
 
 
-Tras la evaluación, las alternativas más viables fueron Apache PySpark y Ray, debido a su compatibilidad con Python (un lenguaje bastante técnico y sencillo) además de su facilidad de instalación. Sin embargo, procesar la telemetría y datos del rover requiere ejecutar múltiples tareas pequeñas de forma concurrente y casi instantánea (visión artificial, lectura de sensores, control de motores y lectura del LiDAR) para lograr una teleoperación fluida.
-
-Al analizar ambas opciones, se encontró una diferencia fundamental en su funcionamiento:
+Tras la evaluación, las más viables fueron Apache PySpark y Ray, debido a su compatibilidad con Python (un lenguaje bastante técnico y sencillo) además de su facilidad de instalación. Al analizar ambas opciones, se encontró una diferencia fundamental en su funcionamiento:
 
 - **Apache PySpark** está diseñado para procesar bloques masivos de datos históricos de una sola vez (procesamiento por lotes o Batch). Esto genera una sobrecarga computacional (conocida como *overhead*), es decir, el sistema invierte un tiempo considerable de preparación antes de ejecutar cada tarea pequeña, lo cual introduce retrasos inaceptables para el control en tiempo real.
 - **Ray**, por el contrario, utiliza un modelo basado en **"actores"** (*Actors*). Los actores son entidades de software que se mantienen activas en la memoria RAM, listas para ejecutar funciones bajo demanda de manera asíncrona. Esto elimina los tiempos de preparación repetitivos, reduciendo drásticamente la latencia y optimizando el uso del procesador.
@@ -42,7 +39,7 @@ Los resultados obtenidos consolidaron la decisión arquitectónica basándose en
 
 ### 1. Latencia y Tiempo de Inicialización
 
-La preparación del entorno en Ray tomó apenas **0.0599 segundos**, siendo significativamente más ágil que PySpark (**0.3144 segundos**). Asimismo, al evaluar la latencia o *overhead* (el tiempo que tarda el sistema en gestionar 10 000 tareas minúsculas sin carga matemática), Ray demostró un desempeño superior al ejecutar el bloque en **3.58 segundos** frente a los **3.87 segundos** de PySpark. Para el entorno de teleoperación del rover, donde se transmiten flujos continuos de pequeñas instrucciones, esta diferencia en la reducción de latencia es crítica para evitar un desfase temporal entre el operador y la respuesta de la máquina; en términos simples se trata de buscar la máxima eficiencia en los tiempos de comunicación entre todos los involucrados, nodo maestro-nodos worker-rover.
+La preparación del entorno en Ray tomó apenas **0.0599 segundos**, siendo significativamente más ágil que PySpark (**0.3144 segundos**). Asimismo, al evaluar la latencia o *overhead* (el tiempo que tarda el sistema en gestionar 10 000 tareas minúsculas sin carga matemática), Ray demostró un desempeño superior al ejecutar el bloque en **3.58 segundos** frente a los **3.87 segundos** de PySpark. 
 
 <div align="center">
   <img src="https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/0bee51a72394c90eeb11015c2dd1299871f52849/Imagenes/bench1.png" width="50%" alt="Gráfica comparativa del tiempo de ejecución de 10 000 micro-tareas vacías (overhead) entre Ray y PySpark">
@@ -52,7 +49,7 @@ La preparación del entorno en Ray tomó apenas **0.0599 segundos**, siendo sign
 
 ### 2. Eficiencia de Recursos (Green Computing)
 
-Un pilar fundamental de la topología desarrollada es la optimización de hardware con recursos limitados. En estado de reposo, el motor de PySpark exigió **17.64 MB** de memoria RAM en el sistema debido a la necesidad de mantener activa la Máquina Virtual de Java (JVM). Por el contrario, la arquitectura de Ray operó con un consumo base casi imperceptible de **0.46 MB**. Esta drástica reducción permite que los nodos trabajadores destinen la totalidad de su memoria al procesamiento real de visión artificial y no al mantenimiento del entorno.
+Un pilar fundamental de la topología desarrollada es la optimización de hardware con recursos limitados. En estado de reposo, el motor de PySpark exigió **17.64 MB** de memoria RAM en el sistema debido a la necesidad de mantener activa la Máquina Virtual de Java (JVM). Por el contrario, la arquitectura de Ray operó con un consumo base casi imperceptible de **0.46 MB**. 
 
 <div align="center">
   <img src="https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/e879fde9a40f4e15306bd0cd7653d1524d37d47b/Imagenes/bench2.png" width="50%" alt="Gráfica comparativa del consumo de memoria RAM en estado de reposo: Ray (0.46 MB) frente a PySpark (17.64 MB)">
@@ -62,7 +59,7 @@ Un pilar fundamental de la topología desarrollada es la optimización de hardwa
 
 ### 3. Evaluación de Aceleración Computacional (Speedup) y Ley de Amdahl
 
-Para validar definitivamente la viabilidad de la arquitectura distribuida frente a un sistema tradicional, se ejecutó una prueba de estrés de Unidad de Procesamiento Central (CPU). El experimento consistió en procesar 64 tareas de alta complejidad matemática, simulando la carga computacional de la cinemática inversa (cálculos para el movimiento de las articulaciones) y los filtros de visión artificial del rover; claro está, utilizando modelos solo de ejemplo.
+Para validar definitivamente la viabilidad de la arquitectura distribuida frente a un sistema tradicional, se ejecutó una prueba de estrés de Unidad de Procesamiento Central (CPU). El experimento consistió en procesar 64 tareas de alta complejidad matemática, simulando la carga computacional de cinemática inversa (cálculos para el movimiento de las articulaciones).
 
 El análisis de rendimiento se fundamentó en dos conceptos clave de la computación paralela:
 
@@ -85,9 +82,9 @@ Si bien PySpark presentó una ventaja marginal en la prueba de estrés de CPU (s
 
 ---
 
-## Scripts de Referencia
+## Scripts usados en las pruebas
 
-Los scripts utilizados para ejecutar estas pruebas de rendimiento se encuentran en el repositorio del proyecto, en la carpeta [`Benchmarks/`](https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/tree/main/Benchmarks):
+Los scripts utilizados para ejecutar estas pruebas de rendimiento se encuentran en el repositorio, en la carpeta [`Benchmarks/`](https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/tree/main/Benchmarks):
 
 - [`Bench_Ray_vs_pyspark1.py`](https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/main/Benchmarks/Bench_Ray_vs_pyspark1.py) – Prueba de overhead (10 000 micro-tareas vacías).
 - [`Bench_Ray_vs_pyspark2.py`](https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/main/Benchmarks/Bench_Ray_vs_pyspark2.py) – Prueba de estrés matemático intensivo y monitorización de recursos.
