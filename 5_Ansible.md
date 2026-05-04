@@ -105,6 +105,3 @@ Son archivos de texto plano escritos en formato YAML (`.yml`) que contienen una 
 
 ---
 
-## 4. Playbooks de Automatización del I2E
-
-*(Sección en construcción: En el siguiente apartado documentaremos la creación del archivo YAML maestro para el despliegue automático del entorno de Big Data (Ray), Python y otras dependencias en todo el clúster).*
