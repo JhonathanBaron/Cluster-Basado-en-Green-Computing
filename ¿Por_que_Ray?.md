@@ -45,7 +45,7 @@ Los resultados obtenidos consolidaron la decisión arquitectónica basándose en
 La preparación del entorno en Ray tomó apenas **0.0599 segundos**, siendo significativamente más ágil que PySpark (**0.3144 segundos**). Asimismo, al evaluar la latencia o *overhead* (el tiempo que tarda el sistema en gestionar 10 000 tareas minúsculas sin carga matemática), Ray demostró un desempeño superior al ejecutar el bloque en **3.58 segundos** frente a los **3.87 segundos** de PySpark. Para el entorno de teleoperación del rover, donde se transmiten flujos continuos de pequeñas instrucciones, esta diferencia en la reducción de latencia es crítica para evitar un desfase temporal entre el operador y la respuesta de la máquina; en términos simples se trata de buscar la máxima eficiencia en los tiempos de comunicación entre todos los involucrados, nodo maestro-nodos worker-rover.
 
 <div align="center">
-  <img src="../Imagenes/bench1.png" width="80%" alt="Gráfica comparativa del tiempo de ejecución de 10 000 micro-tareas vacías (overhead) entre Ray y PySpark">
+  <img src="https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/0bee51a72394c90eeb11015c2dd1299871f52849/Imagenes/bench1.png" width="80%" alt="Gráfica comparativa del tiempo de ejecución de 10 000 micro-tareas vacías (overhead) entre Ray y PySpark">
   <br>
   <em>Figura 1. Tiempo de ejecución para 10 000 micro-tareas (Overhead).</em>
 </div>
