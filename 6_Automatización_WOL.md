@@ -49,12 +49,12 @@ Cree el archivo `mac.yml` en su directorio de playbooks con el siguiente conteni
   # === Bloque de preguntas interactivas ===
   vars_prompt:
     - name: "ruta_destino"
-      prompt: "📂 Ingrese la ruta absoluta para guardar el script (ej. /home/cluster0/scripts_wol)"
+      prompt: "Ingrese la ruta absoluta para guardar el script (ej. /home/cluster0/scripts_wol)"
       default: "/home/cluster0/cluster-utils"
       private: no
 
     - name: "nombre_archivo"
-      prompt: "📄 Ingrese el nombre del archivo (ej. wake_workers.sh)"
+      prompt: "Ingrese el nombre del archivo (ej. wake_workers.sh)"
       default: "encender_workers.sh"
       private: no
   # ===============================================
@@ -84,7 +84,7 @@ Cree el archivo `mac.yml` en su directorio de playbooks con el siguiente conteni
           # Generado automáticamente por Ansible
           # ==========================================================
 
-          echo "🚀 Enviando paquetes mágicos a los nodos trabajadores..."
+          echo "Enviando paquetes mágicos a los nodos trabajadores..."
           echo "----------------------------------------------------------"
 
           {% for host in groups['workers'] %}
@@ -100,6 +100,38 @@ Cree el archivo `mac.yml` en su directorio de playbooks con el siguiente conteni
           {% endif %}
           {% endfor %}
           echo "----------------------------------------------------------"
-          echo "✅ Todos los paquetes WOL han sido enviados."
+          echo "Todos los paquetes WOL han sido enviados."
 
    ```
+## 2. Ejecución del Playbook:
+  ```
+ansible-playbook -i hosts mac.yml
+  ```
+Un ejemplo de como llenar la salida es:
+  ```
+Ingrese la ruta absoluta para guardar el script (ej. /home/cluster0/scripts_wol) [/home/cluster0/cluster-utils]: /home/cluster0/Mac
+Ingrese el nombre del archivo (ej. wake_workers.sh) [encender_workers.sh]: Mac.sh
+  ```
+El playbook:
+
+1. Se conecta a los workers y recopila sus direcciones MAC.
+
+2. Instala wakeonlan en el manager si no está presente.
+
+3. Crea el directorio y escribe el script con las MAC disponibles. Si algún worker no responde, lo omite con una advertencia.
+
+## 3. Encender los nodos
+Con el script ya generado, cada vez que necesite arrancar todo el clúster (por ejemplo, tras un apagado programado) simplemente ejecute:
+  ```
+cd ruta_donde_se_guardo/
+bash encender_workers.sh
+  ```
+El script enviará los paquetes mágicos a las direcciones MAC conocidas. Los trabajadores que estaban apagados (pero con WOL habilitado) se iniciarán automáticamente.
+
+## 4. Consideraciones Finales
+
+* Mantenga el script actualizado: Si añade o reemplaza un worker, vuelva a ejecutar el playbook para regenerar el script con las nuevas direcciones MAC.
+
+* WOL y el estado de energía: Asegúrese de que las fuentes de alimentación y la BIOS estén configuradas para mantener la tarjeta de red alimentada (estado S5).
+
+* Integración futura: Puede llamar a este script desde el propio Ansible (módulo script), o usarlo dentro de un flujo de trabajo mayor que apague nodos inactivos y los encienda cuando se necesiten.
