@@ -1,4 +1,3 @@
-# 7.3 Selección del Entorno de Procesamiento Distribuido y Desarrollo de Interfaces
 
 Para garantizar el manejo, procesamiento y análisis eficiente de los flujos masivos de datos provenientes de los vehículos teleoperados, la primera fase del diseño consistió en una revisión bibliográfica de las plataformas de computación distribuida existentes. Los criterios de selección establecidos incluyeron:
 
@@ -8,9 +7,9 @@ Para garantizar el manejo, procesamiento y análisis eficiente de los flujos mas
 - el lenguaje de programación nativo y
 - la eficiencia computacional (fundamental bajo el paradigma de Green Computing).
 
-En la **Tabla 4** se presenta la matriz comparativa de los principales frameworks evaluados.
+En la **Tabla** se presenta la matriz comparativa de los principales frameworks evaluados.
 
-**Tabla 4. Comparativa de plataformas para procesamiento distribuido y Big Data.**
+**Tabla. Comparativa de plataformas para procesamiento distribuido y Big Data.**
 
 | Framework | Lenguaje Principal | Enfoque de Procesamiento | Curva de Aprendizaje | Principales usos | Documentación |
 |-----------|-------------------|--------------------------|----------------------|------------------|---------------|
@@ -19,7 +18,6 @@ En la **Tabla 4** se presenta la matriz comparativa de los principales framework
 | PySpark | Python / Scala / Java | Datos tabulares y procesamiento por lotes (Batch) | Media - Alta | Bases de datos relacionales y análisis estadístico | [https://spark.apache.org/](https://spark.apache.org/) |
 | Ray | Python / C++ / Java | Modelo de computación distribuida flexible que rompe con el esquema tradicional de "paso de mensajes" o "MapReduce" | Baja - Media | Sobresaliente para Inteligencia Artificial, visión por computador y Reinforcement Learning. | [https://docs.ray.io/](https://docs.ray.io/) |
 
-*Fuente: Autor.*
 
 Tras la evaluación, las alternativas más viables fueron Apache PySpark y Ray, debido a su compatibilidad con Python (un lenguaje bastante técnico y sencillo) además de su facilidad de instalación. Sin embargo, procesar la telemetría y datos del rover requiere ejecutar múltiples tareas pequeñas de forma concurrente y casi instantánea (visión artificial, lectura de sensores, control de motores y lectura del LiDAR) para lograr una teleoperación fluida.
 
@@ -46,7 +44,7 @@ Los resultados obtenidos consolidaron la decisión arquitectónica basándose en
 
 La preparación del entorno en Ray tomó apenas **0.0599 segundos**, siendo significativamente más ágil que PySpark (**0.3144 segundos**). Asimismo, al evaluar la latencia o *overhead* (el tiempo que tarda el sistema en gestionar 10 000 tareas minúsculas sin carga matemática), Ray demostró un desempeño superior al ejecutar el bloque en **3.58 segundos** frente a los **3.87 segundos** de PySpark. Para el entorno de teleoperación del rover, donde se transmiten flujos continuos de pequeñas instrucciones, esta diferencia en la reducción de latencia es crítica para evitar un desfase temporal entre el operador y la respuesta de la máquina; en términos simples se trata de buscar la máxima eficiencia en los tiempos de comunicación entre todos los involucrados, nodo maestro-nodos worker-rover.
 
-![Figura 12 - Tiempo de ejecución para 10 000 micro-tareas (Overhead)](../Imagenes/figura12_overhead.png)
+![Figura 12 - Tiempo de ejecución para 10 000 micro-tareas (Overhead)](../Imagenes/bench1.png)
 
 *Fuente: Autor.*
 
@@ -54,7 +52,7 @@ La preparación del entorno en Ray tomó apenas **0.0599 segundos**, siendo sign
 
 Un pilar fundamental de la topología desarrollada es la optimización de hardware con recursos limitados. En estado de reposo, el motor de PySpark exigió **17.64 MB** de memoria RAM en el sistema debido a la necesidad de mantener activa la Máquina Virtual de Java (JVM). Por el contrario, la arquitectura de Ray operó con un consumo base casi imperceptible de **0.46 MB**. Esta drástica reducción permite que los nodos trabajadores destinen la totalidad de su memoria al procesamiento real de visión artificial y no al mantenimiento del entorno.
 
-![Figura 13 - Consumo de memoria RAM base de los entornos de procesamiento](../Imagenes/figura13_memoria.png)
+![Figura 13 - Consumo de memoria RAM base de los entornos de procesamiento](../Imagenes/bench2.png)
 
 *Fuente: Autor.*
 
@@ -87,5 +85,3 @@ Los scripts utilizados para ejecutar estas pruebas de rendimiento se encuentran 
 
 - [`Bench_Ray_vs_pyspark1.py`](https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/main/Benchmarks/Bench_Ray_vs_pyspark1.py) – Prueba de overhead (10 000 micro-tareas vacías).
 - [`Bench_Ray_vs_pyspark2.py`](https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/main/Benchmarks/Bench_Ray_vs_pyspark2.py) – Prueba de estrés matemático intensivo y monitorización de recursos.
-
-> **Nota:** Asegúrate de subir las imágenes correspondientes a las figuras 12, 13 y 14 a la carpeta `Imagenes/` del repositorio para que las referencias del documento se visualicen correctamente.
