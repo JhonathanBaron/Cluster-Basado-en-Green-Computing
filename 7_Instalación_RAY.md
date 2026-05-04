@@ -32,7 +32,7 @@ ansible all -i hosts -m shell -a "python3 --version && ray --version"
 
 Este Playbook orquesta el despliegue completo: limpia procesos y sesiones huérfanas, inicializa el Head Node en el manager y conecta los Workers.
 Cree el archivo ray.yml en su directorio ansible-cluster con el siguiente contenido:
-```
+```bash
 ---
 - name: Deploy and Clean Ray Cluster
   hosts: all
@@ -143,7 +143,7 @@ ansible-playbook -i hosts ray.yml
 ## 5. Playbook: Detener y Limpiar Ray (stop_ray_cluster.yml)
 Para liberar recursos (especialmente la memoria compartida /dev/shm), debemos apagar Ray correctamente.
 De igual manera en el directorio de ansible que tenga cree su Stop_Ray.yml (los nombres son a su elección).
-```
+```bash
 ---
 - name: Stop and Clean Ray Cluster
   hosts: all
