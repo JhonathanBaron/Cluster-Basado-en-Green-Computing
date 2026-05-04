@@ -45,7 +45,7 @@ Los resultados obtenidos consolidaron la decisión arquitectónica basándose en
 La preparación del entorno en Ray tomó apenas **0.0599 segundos**, siendo significativamente más ágil que PySpark (**0.3144 segundos**). Asimismo, al evaluar la latencia o *overhead* (el tiempo que tarda el sistema en gestionar 10 000 tareas minúsculas sin carga matemática), Ray demostró un desempeño superior al ejecutar el bloque en **3.58 segundos** frente a los **3.87 segundos** de PySpark. Para el entorno de teleoperación del rover, donde se transmiten flujos continuos de pequeñas instrucciones, esta diferencia en la reducción de latencia es crítica para evitar un desfase temporal entre el operador y la respuesta de la máquina; en términos simples se trata de buscar la máxima eficiencia en los tiempos de comunicación entre todos los involucrados, nodo maestro-nodos worker-rover.
 
 <div align="center">
-  <img src="https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/0bee51a72394c90eeb11015c2dd1299871f52849/Imagenes/bench1.png" width="80%" alt="Gráfica comparativa del tiempo de ejecución de 10 000 micro-tareas vacías (overhead) entre Ray y PySpark">
+  <img src="https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/0bee51a72394c90eeb11015c2dd1299871f52849/Imagenes/bench1.png" width="50%" alt="Gráfica comparativa del tiempo de ejecución de 10 000 micro-tareas vacías (overhead) entre Ray y PySpark">
   <br>
   <em>Figura 1. Tiempo de ejecución para 10 000 micro-tareas (Overhead).</em>
 </div>
@@ -55,7 +55,7 @@ La preparación del entorno en Ray tomó apenas **0.0599 segundos**, siendo sign
 Un pilar fundamental de la topología desarrollada es la optimización de hardware con recursos limitados. En estado de reposo, el motor de PySpark exigió **17.64 MB** de memoria RAM en el sistema debido a la necesidad de mantener activa la Máquina Virtual de Java (JVM). Por el contrario, la arquitectura de Ray operó con un consumo base casi imperceptible de **0.46 MB**. Esta drástica reducción permite que los nodos trabajadores destinen la totalidad de su memoria al procesamiento real de visión artificial y no al mantenimiento del entorno.
 
 <div align="center">
-  <img src="../Imagenes/bench2.png" width="70%" alt="Gráfica comparativa del consumo de memoria RAM en estado de reposo: Ray (0.46 MB) frente a PySpark (17.64 MB)">
+  <img src="[../Imagenes/bench2.png](https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/8dd75fae020839d97d9e6e7b92a220fa5bbd572c/Imagenes/bench2.png)" width="50%" alt="Gráfica comparativa del consumo de memoria RAM en estado de reposo: Ray (0.46 MB) frente a PySpark (17.64 MB)">
   <br>
   <em>Figura 2. Consumo de memoria RAM base de los entornos de procesamiento.</em>
 </div>
@@ -72,7 +72,7 @@ El análisis de rendimiento se fundamentó en dos conceptos clave de la computac
 Al ejecutar la carga de prueba en un único núcleo (procesamiento secuencial), simulando un computador convencional, el sistema requirió **45.31 segundos** para finalizar. Posteriormente, al distribuir la misma carga utilizando toda la potencia del clúster (procesamiento paralelo), los tiempos se redujeron drásticamente: Ray finalizó en **5.78 segundos** y PySpark en **5.71 segundos**.
 
 <div align="center">
-  <img src="../Imagenes/tiempo.png" width="80%" alt="Gráfica comparativa de la prueba de estrés de CPU: tiempo secuencial (45.31 s) vs Ray (5.78 s) vs PySpark (5.71 s), con factor de aceleración">
+  <img src="https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/8dd75fae020839d97d9e6e7b92a220fa5bbd572c/Imagenes/tiempo.png" width="50%" alt="Gráfica comparativa de la prueba de estrés de CPU: tiempo secuencial (45.31 s) vs Ray (5.78 s) vs PySpark (5.71 s), con factor de aceleración">
   <br>
   <em>Figura 3. Prueba de estrés de CPU: Comparativa de tiempos de ejecución y factor de aceleración.</em>
 </div>
