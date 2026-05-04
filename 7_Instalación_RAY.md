@@ -1,3 +1,25 @@
+# 7. Instalación y Configuración de Ray con Ansible
+
+## ¿Qué es Ray y cómo funciona?
+
+[Ray](https://github.com/ray-project/ray) es un framework unificado de código abierto para escalar aplicaciones de inteligencia artificial y Python. Permite distribuir cargas de trabajo de forma sencilla desde un portátil hasta un clúster de múltiples nodos, ofreciendo bibliotecas especializadas para entrenamiento (`Ray Train`), ajuste de hiperparámetros (`Ray Tune`), despliegue de modelos (`Ray Serve`) y aprendizaje por refuerzo (`RLlib`).
+
+### Componentes clave de un clúster Ray
+
+- **Nodo Head (maestro):** coordina el clúster, ejecuta el *Global Control Service* (GCS) que almacena metadatos y el estado del sistema, y aloja el Dashboard de monitoreo.
+- **Nodos Worker:** ejecutan las tareas y actores. Se conectan al Head y aportan recursos (CPU, GPU, memoria).
+- **Raylet:** demonio que se ejecuta en cada nodo; gestiona la ejecución local de tareas y el almacenamiento de objetos.
+- **Object Store (Plasma):** almacén de objetos en memoria compartida que permite transferencias rápidas de datos entre tareas sin copias innecesarias.
+
+### ¿Cómo funciona?
+
+Ray permite paralelizar código Python decorando funciones y clases como *tasks* y *actors*. El programador de Ray distribuye automáticamente el trabajo entre los nodos, resuelve las dependencias de datos y tolera fallos. El Dashboard (por defecto en el puerto `8265`) ofrece una interfaz web para monitorizar el clúster en tiempo real.
+
+**Referencias oficiales:**
+- Documentación de Ray: [https://docs.ray.io/en/latest/ray-observability/getting-started.html](https://docs.ray.io/en/latest/ray-observability/getting-started.html)
+- Repositorio en GitHub: [https://github.com/ray-project/ray](https://github.com/ray-project/ray)
+
+---
 ## Prerrequisitos
 - **Ansible** instalado en el nodo controlador (`cluster0@cluster0:~/ansible-cluster$`).
 - Inventario (`hosts`) configurado con los grupos `manager` y `workers`.
