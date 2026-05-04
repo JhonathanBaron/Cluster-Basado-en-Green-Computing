@@ -55,7 +55,7 @@ La preparación del entorno en Ray tomó apenas **0.0599 segundos**, siendo sign
 Un pilar fundamental de la topología desarrollada es la optimización de hardware con recursos limitados. En estado de reposo, el motor de PySpark exigió **17.64 MB** de memoria RAM en el sistema debido a la necesidad de mantener activa la Máquina Virtual de Java (JVM). Por el contrario, la arquitectura de Ray operó con un consumo base casi imperceptible de **0.46 MB**. Esta drástica reducción permite que los nodos trabajadores destinen la totalidad de su memoria al procesamiento real de visión artificial y no al mantenimiento del entorno.
 
 <div align="center">
-  <img src="[[../Imagenes/bench2.png](https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/e879fde9a40f4e15306bd0cd7653d1524d37d47b/Imagenes/bench2.png)](https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/8dd75fae020839d97d9e6e7b92a220fa5bbd572c/Imagenes/bench2.png)" width="50%" alt="Gráfica comparativa del consumo de memoria RAM en estado de reposo: Ray (0.46 MB) frente a PySpark (17.64 MB)">
+  <img src="https://github.com/JhonathanBaron/Cluster-Basado-en-Green-Computing/blob/e879fde9a40f4e15306bd0cd7653d1524d37d47b/Imagenes/bench2.png" width="50%" alt="Gráfica comparativa del consumo de memoria RAM en estado de reposo: Ray (0.46 MB) frente a PySpark (17.64 MB)">
   <br>
   <em>Figura 2. Consumo de memoria RAM base de los entornos de procesamiento.</em>
 </div>
