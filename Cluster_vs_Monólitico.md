@@ -44,7 +44,7 @@ Los scripts utilizados están en el repositorio:
 
 ### Rendimiento de Memoria (Ancho de Banda y Latencia)
 
-| Métrica                 | Nodo Individual (ejemplo) | Clúster (agregado real) | Unidad   | Ganancia |
+| Métrica                 | Nodo Individual           | Clúster                 | Unidad   | Ganancia |
 |-------------------------|---------------------------|-------------------------|----------|----------|
 | STREAM Copy             | ~12 GB/s                  | **311.6**               | GB/s     | 26×      |
 | STREAM Scale            | ~5 GB/s                   | **96.0**                | GB/s     | 19×      |
