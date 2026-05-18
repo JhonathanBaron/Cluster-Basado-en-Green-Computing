@@ -40,7 +40,6 @@ Los scripts utilizados están en el repositorio:
 > **Conclusión**: La capacidad bruta de cómputo del clúster (895 GFLOP/s) es **6.6 veces superior** al nodo individual más potente (cluster0: 134.9 GFLOP/s).
 > **Conclusión práctica**: El clúster es **6.6 veces más potente** en cálculos pesados que el mejor nodo por separado. Ideal para simulaciones científicas, análisis de datos masivos o entrenamiento de modelos de IA (si el problema se puede dividir).
 
----
 
 ### Rendimiento de Memoria (Ancho de Banda y Latencia)
 
@@ -55,7 +54,7 @@ Los scripts utilizados están en el repositorio:
 > **Conclusión**: El clúster alcanza **casi 100 GB/s** de ancho de banda Triad agregado, algo imposible para un solo nodo.
 > **Conclusión práctica**: El clúster es **20 veces más rápido** moviendo datos. Esto es clave para procesar **grandes archivos, bases de datos en memoria, o flujos de vídeo** donde el cuello de botella suele ser la RAM.
 > **A tener en cuenta**: Para aplicaciones que acceden a memoria de forma aleatoria (bases de datos, listas enlazadas), una latencia baja es importante. Si se libera RAM en los nodos (cerrar programas pesados), la latencia del clúster mejorará.
----
+
 
 ### Rendimiento FFT y Latencia
 
