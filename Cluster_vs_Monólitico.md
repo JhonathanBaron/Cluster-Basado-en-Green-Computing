@@ -26,33 +26,41 @@ Los scripts utilizados están en el repositorio:
 ---
 
 ### 2. Resultados obtenidos
+### Rendimiento de Cómputo (GFLOPs)
 
-#### Cómputo (DGEMM – multiplicación de matrices)
+| Entidad / Máquina                          | CPU (Núcleos/Hilos)     | GFLOPs (Pico) | Nota                               |
+|--------------------------------------------|-------------------------|---------------|------------------------------------|
+| **Ray Cluster – DGEMM           **        | 72 CPUs lógicas         | **895.39**    | Suma de todos los workers          |
+| `cluster0` (individual)                   | i5‑4590S (4C/4T)        | 134.89        | Medido con `bench01_monolithic.py` |
+| `DESKTOP-TK3VOIK` (individual)            | i5‑1035G1 (4C/8T)       | 121.05        |                                    |
+| `DESKTOP-AJJ2N9U` (individual)            | i5‑1035G1 (4C/8T)       | 78.55         | (RAM limitada, con swap)           |
+| `DESKTOP-HEJLCP1` (individual)            | Ryzen 5 3500U (4C/8T)   | 67.82         |                                    |
+| `cluster1` (individual)                   | i7‑3612QM (4C/8T)       | 33.65         |                                    |
 
-| Tipo de ejecución | GFLOP/s (agregado) | ¿Qué significa? |
-|------------------|-------------------|------------------|
-| **Clúster** (todos los nodos) | **895.4** | El clúster puede hacer 895 mil millones de operaciones matemáticas por segundo. |
-| Monolítico (nodo más rápido) | 134.9 | Un solo nodo potente se queda en 134.9 GFLOP/s. |
-
+> **Conclusión**: La capacidad bruta de cómputo del clúster (895 GFLOP/s) es **6.6 veces superior** al nodo individual más potente (cluster0: 134.9 GFLOP/s).
 > **Conclusión práctica**: El clúster es **6.6 veces más potente** en cálculos pesados que el mejor nodo por separado. Ideal para simulaciones científicas, análisis de datos masivos o entrenamiento de modelos de IA (si el problema se puede dividir).
 
-#### Memoria (STREAM Triad – operación lectura+escritura)
+---
 
-| Tipo de ejecución | GB/s (agregado) | ¿Qué significa? |
-|------------------|----------------|------------------|
-| **Clúster** | **99.5** | El clúster mueve 99.5 GB por segundo entre CPU y RAM. |
-| Monolítico (nodo típico) | ~5 | Un nodo solo apenas alcanza 5 GB/s. |
+### Rendimiento de Memoria (Ancho de Banda y Latencia)
 
+| Métrica                 | Nodo Individual (ejemplo) | Clúster (agregado real) | Unidad   | Ganancia |
+|-------------------------|---------------------------|-------------------------|----------|----------|
+| STREAM Copy             | ~12 GB/s                  | **311.6**               | GB/s     | 26×      |
+| STREAM Scale            | ~5 GB/s                   | **96.0**                | GB/s     | 19×      |
+| STREAM Add              | ~6 GB/s                   | **116.6**               | GB/s     | 19×      |
+| STREAM Triad (principal)| ~5 GB/s                   | **99.5**                | GB/s     | **20×**  |
+| Latencia RAM (media)    | 220‑280 ns                | 531 ns                  | ns       | (mayor debido a nodos con swap) |
+
+> **Conclusión**: El clúster alcanza **casi 100 GB/s** de ancho de banda Triad agregado, algo imposible para un solo nodo.
 > **Conclusión práctica**: El clúster es **20 veces más rápido** moviendo datos. Esto es clave para procesar **grandes archivos, bases de datos en memoria, o flujos de vídeo** donde el cuello de botella suele ser la RAM.
-
-#### Latencia de memoria
-
-| Tipo de ejecución | Latencia media (ns) | Interpretación |
-|------------------|---------------------|----------------|
-| Clúster | 531 ns | Un poco alta debido a que algunos nodos usaron memoria virtual (swap) por falta de RAM. |
-| Monolítico (normal) | 220‑280 ns | Latencia típica de RAM DDR3/DDR4. |
-
 > **A tener en cuenta**: Para aplicaciones que acceden a memoria de forma aleatoria (bases de datos, listas enlazadas), una latencia baja es importante. Si se libera RAM en los nodos (cerrar programas pesados), la latencia del clúster mejorará.
+---
+
+### Rendimiento FFT y Latencia
+
+- **FFT agregado**: 22.66 GFLOP/s (suma de todos los workers).  
+- **Latencia media**: 531 ns, con valores entre 280 ns y 1464 ns.  
 
 ---
 
