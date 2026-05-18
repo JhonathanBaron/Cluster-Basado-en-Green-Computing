@@ -66,7 +66,7 @@ Los scripts utilizados están en el repositorio:
 
 ### 3. ¿Para qué sirve este rendimiento en la práctica?
 
-Con estos números, tu clúster **Green Computing** es especialmente bueno para:
+El clúster **Green Computing** es especialmente bueno para:
 
 | Tipo de tarea | Ejemplo concreto | Por qué funciona bien |
 |---------------|------------------|----------------------|
