@@ -16,7 +16,7 @@ Al ejecutarse en un nodo worker recién instalado, el script realiza automática
 
 ## 2. Instrucciones de Ejecución Paso a Paso
 
-Para integrar un nuevo nodo worker al clúster, siga estos pasos en la terminal de la placa HP Probook:
+Para integrar un nuevo nodo worker al clúster, siga estos pasos en la terminal de la placa (Portátil o cpu):
 
 ### Paso 0: Obtener la llave pública del Nodo Maestro
 Antes de ejecutar el script en cada worker, corra este comando **en el Nodo Maestro** para visualizar la llave pública generada previamente:
@@ -46,7 +46,7 @@ Por ejemplo, si su red es `10.4.8.X`, quiere asignar la IP terminada en `20`, y 
 sudo ./config_worker.sh 10.4.8 20 "ssh-ed25519 AAAAC3Nz... maestro@cluster-i2e"
 ```
 
-*(Nota: Repita este proceso iterando el índice para cada nodo. Ej: `21` para el worker 2, `22` para el worker 3, etc.)*
+*(Nota: Repita este proceso iterando el índice para cada nodo. Ej: `21` para el worker 1, `22` para el worker 2, etc.)*
 
 ---
 
